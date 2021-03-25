@@ -1,0 +1,16 @@
+{
+    "name": "msr/kabum",
+    "authors": [
+        {
+            "name": "marcelopython",
+            "email": "msr88957@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "psr-4":{
+            "Kabum\\App\\":"src/",
+            "DB\\Database\\":"database/"
+        }
+    }
+}
