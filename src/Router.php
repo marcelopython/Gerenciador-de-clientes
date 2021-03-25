@@ -29,7 +29,6 @@ class Router{
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->scriptName = $_SERVER['SCRIPT_NAME'];
         $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-
     }
 
     public function get($url, $controller = [])
@@ -57,7 +56,7 @@ class Router{
                 return (new $controller())->$method(array_merge($this->server, ['data_request'=>$route['data_request']]));
             }
         }
-        return ViewHTML::view('http/404');
+        return ViewHTML::view($this->protocol.'404');
     }
 
     public function getRoutes()
@@ -67,7 +66,7 @@ class Router{
 
     public function redirectTo($uri)
     {
-        header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri);
+        return header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri);
     }
 
 }

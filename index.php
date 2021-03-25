@@ -1,3 +1,3 @@
 <?php
 
-include __DIR__.'/public/index.php';
+header('Location: http://localhost/kabum/public/index.php/login');

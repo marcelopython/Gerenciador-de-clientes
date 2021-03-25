@@ -3,6 +3,7 @@
 namespace Kabum\App\Controller\Auth;
 
 
+use Kabum\App\Controller\Traits\Altenticate;
 use Kabum\App\Models\User;
 use Kabum\App\Models\ContractModel\UserInterface;
 use Kabum\App\Router;
@@ -10,6 +11,8 @@ use Kabum\App\ViewHTML;
 
 class LoginController
 {
+
+    use Altenticate;
 
     private UserInterface $user;
 
@@ -23,24 +26,13 @@ class LoginController
         return ViewHTML::view('auth/login');
     }
 
-
     public function login($request)
     {
-        $data = $request['data_request'];
-        $data = array_merge($data, $this->sanitize($data));
-        $user = $this->user->where('email', $data['email']);
-        if(!$user){
-            return $this->loginForm();
+        if($this->check($request)){
+            return (new Router())->redirectTo('dashboard');
         }
-        (new Router())->redirectTo('dashboard');
+        (new Router())->redirectTo($this->redirectNotAuthenticate);
     }
 
-    public function sanitize(array $data)
-    {
-        return filter_var_array($data, [
-            'email'=>FILTER_SANITIZE_EMAIL,
-            'password'=>FILTER_SANITIZE_STRING
-        ]);
-    }
 
 }
