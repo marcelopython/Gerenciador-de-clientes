@@ -1,19 +1,10 @@
 <?php
 
 require __DIR__.'/../vendor/autoload.php';
+include __DIR__.'/../database/connectionInitial.php';
 
-use \DB\Database\Connection;
 use \Kabum\App\Router;
 
-$dataConnection = include __DIR__ . '/../config/database.php';
-define('HOST', $dataConnection['host']);
-define('DBNAME', $dataConnection['database']);
-define('CHARSET', $dataConnection['charset']);
-define('USER', $dataConnection['user']);
-define('PASSWORD', $dataConnection['password']);
-define('PORT', $dataConnection['port']);
-
-Connection::connect();
 
 $route = new Router();
 $GLOBALS['router']  = $route;

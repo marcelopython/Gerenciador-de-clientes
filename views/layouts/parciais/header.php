@@ -12,8 +12,8 @@
             }
         ?>
     </title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/jquery.js"></script>
 
 </head>
 <body style="height: 100%">
