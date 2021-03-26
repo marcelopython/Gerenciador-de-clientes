@@ -12,8 +12,8 @@
             }
         ?>
     </title>
-    <link rel="stylesheet" href="../css/bootstrap.css">
-    <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" href="<?=  (new \Kabum\App\Router())->asset('/css/bootstrap.css') ?>">
+    <script src="<?=  (new \Kabum\App\Router())->asset('/js/jquery.js') ?>"></script>
 
 </head>
 <body style="height: 100%">

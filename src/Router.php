@@ -2,7 +2,10 @@
 
 namespace Kabum\App;
 
-class Router{
+use Kabum\App\Contracts\RouterInterface;
+
+class Router implements RouterInterface
+{
 
     private array $routes = [];
 
@@ -18,29 +21,41 @@ class Router{
 
     private string $protocol;
 
-    private $next;
-
     public function __construct()
     {
         $this->uri = $_SERVER['REQUEST_URI'];
-//        echo '<pre>';
-//        var_dump($_SERVER);
-//        exit;
         $this->httpHost = $_SERVER['HTTP_HOST'];
         $this->server = $_SERVER;
+//        echo '<pre>';
+//        var_dump($this->server);
+//        exit;
+//        /kabum/public/css/bootstrap.css
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->scriptName = $_SERVER['SCRIPT_NAME'];
         $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
     }
 
-    private function setRoute($route)
+    public function asset(string $path)
+    {
+        $paths = explode('/', $this->scriptName);
+        $indexFile = array_search('index.php', $paths);
+//
+//        var_dump($indexFile);
+//        exit;
+        if($indexFile !== false){
+            unset($paths[$indexFile]);
+            return join('/',$paths).$path;
+        }
+    }
+
+    private function setRoute(array $route)
     {
         $this->routes = array_merge($this->routes, $route);
     }
 
-    public function get($url, $controller = []): Router
+    public function get($url, $controller = [], \Closure $closure = null): Router
     {
-        $this->setRoute([['method'=>'GET', $url, $controller, 'data_request'=>$_GET]]);
+        $this->setRoute([['method'=>'GET', $url, !empty($controller) ? $controller : $closure, 'data_request'=>$_GET]]);
         return $this;
     }
 
@@ -62,13 +77,16 @@ class Router{
         }
     }
 
-    public function redirect()
+    public function run()
     {
         foreach($this->routes as $route){
             if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->uri && $this->method === $route['method']){
+                $request = array_merge($this->server, ['data_request' => $route['data_request']]);
+                if($route[1] instanceof \Closure){
+                    return $route[1]($request);
+                }
                 $controller = $route[1][0];
                 $method = $route[1][1];
-                $request = array_merge($this->server, ['data_request' => $route['data_request']]);
                 if(!isset($route['middleware'])){
                     return (new $controller())->$method($request);
                 }else{
@@ -76,24 +94,13 @@ class Router{
                         $request = (new $middleware())->middleware($request, function($request){return $request;});
                         if(!$request){
                             return $this->redirectTo('login');
-                        }else{
-                            (new $controller())->$method($request);
                         }
                     }
+                    return (new $controller())->$method($request);
                 }
             }
         }
         return ViewHTML::view('http/404');
-    }
-
-    private function next(array $request)
-    {
-        return $request;
-    }
-
-    public function getRoutes(): array
-    {
-        return $this->routes;
     }
 
     public function redirectTo($uri)

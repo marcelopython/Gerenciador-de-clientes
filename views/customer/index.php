@@ -7,11 +7,9 @@ include __DIR__ . '/../layouts/section/section.php';
         <div class="card">
             <div class="card-header">
                 <h4 class="d-inline-block">Clientes</h4>
-                <button class="btn btn-outline-dark float-right d-inline-block">Novo Cliente</button>
+                <a href="<?=$_SERVER['SCRIPT_NAME'].'/customer/create'?>" class="btn btn-outline-dark float-right d-inline-block">Novo Cliente</a>
             </div>
             <div class="card-body">
-                <!--    Nome; Data Nascimento;CPF; RG; Telefone.-->
-<!--                Incluir, Editar e Excluir-->
                 <table class="table">
                     <caption>List of users</caption>
                     <thead>

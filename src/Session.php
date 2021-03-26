@@ -20,7 +20,10 @@ abstract class Session
 
     public static function get(string $key)
     {
-        return $_SESSION[$key];
+        if(isset($_SESSION[$key])){
+            return $_SESSION[$key];
+        }
+        return null;
     }
 
     public static function remove(string $key)
