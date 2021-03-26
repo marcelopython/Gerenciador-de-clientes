@@ -3,6 +3,7 @@
 namespace Kabum\App\Controller\Dashboard;
 
 
+use Kabum\App\Session;
 use Kabum\App\ViewHTML;
 
 class DashboardController
@@ -10,7 +11,8 @@ class DashboardController
 
     public function index()
     {
-        return ViewHTML::view('dashboard/index');
+        $user = Session::get('user');
+        return ViewHTML::view('dashboard/index', $user);
     }
 
 }

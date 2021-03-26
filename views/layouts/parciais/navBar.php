@@ -10,6 +10,8 @@
                 <a class="nav-link" href="<?=$_SERVER['SCRIPT_NAME'].'/customer'?>">Clientes</a>
             </li>
         </ul>
-        <a class="btn btn-info" href="#">Sair</a>
+        <form action="<?=$_SERVER['SCRIPT_NAME'].'/logout'?>" method="post">
+            <button class="btn btn-info" href="#">Sair</button>
+        </form>
     </div>
 </nav>

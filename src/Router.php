@@ -6,17 +6,19 @@ class Router{
 
     private array $routes = [];
 
-    private $uri;
+    private string $uri;
 
-    private $httpHost;
+    private string  $httpHost;
 
-    private $server;
+    private array $server;
 
-    private $method;
+    private string $method;
 
-    private $scriptName;
+    private string $scriptName;
 
-    private $protocol;
+    private string $protocol;
+
+    private $next;
 
     public function __construct()
     {
@@ -31,20 +33,33 @@ class Router{
         $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
     }
 
-    public function get($url, $controller = [])
+    private function setRoute($route)
     {
-        $this->routes = array_merge($this->routes, [
-            ['method'=>'GET', $url, $controller, 'data_request'=>$_GET]
-        ]);
+        $this->routes = array_merge($this->routes, $route);
+    }
+
+    public function get($url, $controller = []): Router
+    {
+        $this->setRoute([['method'=>'GET', $url, $controller, 'data_request'=>$_GET]]);
         return $this;
     }
 
-    public function post($url, $controller = [])
+    public function post($url, $controller = []): Router
     {
-        $this->routes = array_merge($this->routes, [
-            ['method'=>'POST',$url, $controller, 'data_request'=>$_POST]
-        ]);
+        $this->setRoute([['method'=>'POST',$url, $controller, 'data_request'=>$_POST]]);
         return $this;
+    }
+
+    public function middleware(array $middlewares, \Closure $func)
+    {
+        $urlsInMiddleware = $func();
+        foreach($this->routes as $key => $route){
+            foreach($urlsInMiddleware as $url) {
+                if($route[0] === $url){
+                    $this->routes[$key]['middleware'] = $middlewares;
+                }
+            }
+        }
     }
 
     public function redirect()
@@ -53,13 +68,30 @@ class Router{
             if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->uri && $this->method === $route['method']){
                 $controller = $route[1][0];
                 $method = $route[1][1];
-                return (new $controller())->$method(array_merge($this->server, ['data_request'=>$route['data_request']]));
+                $request = array_merge($this->server, ['data_request' => $route['data_request']]);
+                if(!isset($route['middleware'])){
+                    return (new $controller())->$method($request);
+                }else{
+                    foreach($route['middleware'] as $middleware){
+                        $request = (new $middleware())->middleware($request, function($request){return $request;});
+                        if(!$request){
+                            return $this->redirectTo('login');
+                        }else{
+                            (new $controller())->$method($request);
+                        }
+                    }
+                }
             }
         }
-        return ViewHTML::view($this->protocol.'404');
+        return ViewHTML::view('http/404');
     }
 
-    public function getRoutes()
+    private function next(array $request)
+    {
+        return $request;
+    }
+
+    public function getRoutes(): array
     {
         return $this->routes;
     }
