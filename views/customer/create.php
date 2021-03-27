@@ -8,119 +8,55 @@ include __DIR__ . '/../layouts/section/section.php';
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
-                <button class="btn btn-danger">Voltar</button>
+                <h5>Cadastro de cliente</h5>
+                <a href="<?=$_SERVER['SCRIPT_NAME'].'/customer'?>" class="btn btn-danger">Voltar</a>
             </div>
             <div class="card-body">
                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/create'?>" method="post">
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="name">Nome</label>
-                            <input type="text" class="form-control" placeholder="Nome" name="name" id="name" required>
+                            <input type="text" class="form-control" placeholder="Nome" name="name" id="name" required
+                                   autocomplete="no" maxlength="60">
                         </div>
                         <div class="col-md-2">
                             <label for="cpf">CPF</label>
-                            <input type="text" class="form-control" name="cpf" id="cpf" required>
+                            <input type="number" class="form-control" name="cpf" id="cpf" required autocomplete="no" maxlength="11">
                         </div>
                         <div class="col-md-2">
                             <label for="rg">RG</label>
-                            <input type="text" class="form-control" name="rg" id="rg" required>
+                            <input type="number" class="form-control" name="rg" id="rg" required autocomplete="no" maxlength="7">
                         </div>
                         <div class="col-md-2">
                             <label for="birth_date">Data Nascimento</label>
-                            <input type="date" class="form-control" name="birth_date" id="birth_date" required>
+                            <input type="date" class="form-control" name="birth_date" id="birth_date" required autocomplete="no">
                         </div>
                         <div class="col-md-2">
                             <label for="phone">Telefone</label>
-                            <input type="text" class="form-control" name="phone" id="phone" required>
+                            <input type="number" class="form-control" name="phone" id="phone" required autocomplete="no"
+                             maxlength="11">
                         </div>
                         <div class="col-12">
                             <hr>
                             <h6>Endereço</h6>
-                            <button class="float-right btn btn-warning" type="button">
+                            <button class="float-right btn btn-warning" type="button" id="btn-new-address">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="address[0][cep]">Cep</label>
-                            <input autocomplete="no" type="text" inputmode="numeric" class="form-control" id="address[0][cep]"
-                                   name="address[0][cep]" maxlength="9">
-                        </div>
-                        <div class="form-group col-md-7">
-                            <label for="address[0][address]">Endereço
-                            </label>
-                            <input autocomplete="no" type="text" class="form-control" name="address[0][address]" id="address[0][address]"
-                                   maxlength="100">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="address[0][number]">Número</label>
-                            <input autocomplete="no" type="text" class="form-control" name="address[0][number]" id="address[0][number]" maxlength="10">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="address[0][complement]">Complemento</label>
-                            <input autocomplete="no" type="text" class="form-control" name="address[0][complement]" id="address[0][complement]"
-                                   maxlength="60">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="address[0][neighborhood]">Bairro
-                            </label>
-                            <input autocomplete="no" type="text" class="form-control" name="address[0][neighborhood]"
-                                   id="address[0][neighborhood]" maxlength="60">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="address[0][city]">Cidade</label>
-                            <input autocomplete="no" type="text" class="form-control" name="address[0][city]" id="address[0][city]" maxlength="60">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="address[0][state]">Estado</label>
-                            <select type="text" class="form-control" name="address[0][state]" id="address[0][state]" autocomplete="no">
-                                <option value="GO">GO</option>
-                            </select>
+                        <div id="container-address">
+                            <?php
+                                $index = 0;
+                                include __DIR__ . '/../customer/address/form.php';
+                            ?>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label for="address[1][cep]">Cep</label>
-                        <input autocomplete="no" type="text" inputmode="numeric" class="form-control" id="address[1][cep]"
-                               name="address[1][cep]" maxlength="9">
+                    <div class="card-footer d-flex justify-content-end">
+                        <button class="btn btn-success align-right">Salvar</button>
                     </div>
-                    <div class="form-group col-md-7">
-                        <label for="address[1][address]">Endereço
-                        </label>
-                        <input autocomplete="no" type="text" class="form-control" name="address[1][address]" id="address[1][address]"
-                               maxlength="100">
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="address[1][number]">Número</label>
-                        <input autocomplete="no" type="text" class="form-control" name="address[1][number]" id="address[1][number]" maxlength="10">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="address[1][complement]">Complemento</label>
-                        <input autocomplete="no" type="text" class="form-control" name="address[1][complement]" id="address[1][complement]"
-                               maxlength="60">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="address[1][neighborhood]">Bairro
-                        </label>
-                        <input autocomplete="no" type="text" class="form-control" name="address[1][neighborhood]"
-                               id="address[1][neighborhood]" maxlength="60">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="address[1][city]">Cidade</label>
-                        <input autocomplete="no" type="text" class="form-control" name="address[1][city]" id="address[1][city]" maxlength="60">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="address[1][state]">Estado</label>
-                        <select type="text" class="form-control" name="address[1][state]" id="address[1][state]" autocomplete="no">
-                            <option value="GO">GO</option>
-                        </select>
-                    </div>
+                </form>
             </div>
-            <div class="card-footer">
-                <button class="btn btn-success float-right">Salvar</button>
-            </div>
-            </form>
         </div>
     </div>
-
-    </div>
-
+    <input type="hidden" id="base-url" value="<?=  $_SERVER['SCRIPT_NAME'] ?>">
+    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/create.js') ?>"></script>
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>

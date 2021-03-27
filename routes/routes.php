@@ -23,9 +23,10 @@ $route->middleware([\Kabum\App\Middleware\AuthMiddleware::class], function() use
     $route->get('/customer/create', [\Kabum\App\Controller\Customer\CustomerController::class, 'form']);
     $route->post('/customer/create', [\Kabum\App\Controller\Customer\CustomerController::class, 'create']);
 
-    $route->post('/logout', [\Kabum\App\Controller\Auth\LogoutController::class, 'logout']);
+    /*Rotas de endereço*/
+//    $route->get('/form-address/<int: index>', [\Kabum\App\Controller\Address\AddressController::class, 'formAdd']);
 
-    return ['/dashboard', '/customer', '/logout'];
+    return ['/dashboard', '/customer', '/logout', '/form-address'];
 });
 
 $route->run();

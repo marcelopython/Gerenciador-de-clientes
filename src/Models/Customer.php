@@ -22,4 +22,6 @@ class Customer extends Model implements CustomerInterface
     {
         return $this->hasMany(Address::class, 'pessoa_id', 'id');
     }
+
+
 }

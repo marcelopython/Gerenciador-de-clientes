@@ -12,7 +12,7 @@ $stmt = \DB\Database\Connection::connect()->prepare('
    cep VARCHAR(9) NOT NULL,
    address VARCHAR(100) NOT NULL,
    number VARCHAR(10) NOT NULL,
-   complement VARCHAR(60) NOT NULL,
+   complement VARCHAR(60) NULL,
    neighborhood VARCHAR(60) NOT NULL,
    city VARCHAR(60) NOT NULL,
    state VARCHAR(30) NOT NULL

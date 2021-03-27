@@ -6,7 +6,7 @@ include __DIR__.'/../connectionInitial.php';
 $stmt = \DB\Database\Connection::connect()->prepare('
  CREATE TABLE peoples (
    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-   name VARCHAR(30) NOT NULL,
+   name VARCHAR(60) NOT NULL,
    birth_date DATE NOT NULL,
    cpf VARCHAR(14) NOT NULL,
    rg VARCHAR(7) NOT NULL,

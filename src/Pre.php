@@ -15,10 +15,9 @@ class Pre
     public static function pre($data, $exit = true)
     {
         echo '<pre>';
-        print_r($data);
+        print_r(json_encode($data, true));
         echo '<pre>';
         if($exit){
-
             exit;
         }
     }
