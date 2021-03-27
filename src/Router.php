@@ -26,10 +26,6 @@ class Router implements RouterInterface
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->httpHost = $_SERVER['HTTP_HOST'];
         $this->server = $_SERVER;
-//        echo '<pre>';
-//        var_dump($this->server);
-//        exit;
-//        /kabum/public/css/bootstrap.css
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->scriptName = $_SERVER['SCRIPT_NAME'];
         $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
@@ -39,9 +35,6 @@ class Router implements RouterInterface
     {
         $paths = explode('/', $this->scriptName);
         $indexFile = array_search('index.php', $paths);
-//
-//        var_dump($indexFile);
-//        exit;
         if($indexFile !== false){
             unset($paths[$indexFile]);
             return join('/',$paths).$path;

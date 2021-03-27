@@ -16,5 +16,4 @@ class LogoutController
 
     use Authenticate;
 
-
 }

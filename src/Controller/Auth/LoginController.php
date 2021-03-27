@@ -26,7 +26,7 @@ class LoginController
     {
         $user = Session::get('user');
         if($user){
-            return (new Router())->redirectTo('dashboard');
+            (new Router())->redirectTo('dashboard');
         }
         return ViewHTML::view('auth/login');
     }
@@ -35,7 +35,7 @@ class LoginController
     {
         $data = $request['data_request'];
         if($this->check($data)){
-            return (new Router())->redirectTo('dashboard');
+            (new Router())->redirectTo('dashboard');
         }
         (new Router())->redirectTo($this->redirectNotAuthenticate);
     }

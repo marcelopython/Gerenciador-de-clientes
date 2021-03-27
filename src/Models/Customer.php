@@ -9,11 +9,17 @@
 namespace Kabum\App\Models;
 
 
-class People extends Model
+use Kabum\App\Models\ContractModel\CustomerInterface;
+
+class Customer extends Model implements CustomerInterface
 {
 
     protected string $table = 'peoples';
 
     protected array $fields = ['name', 'cpf', 'rg', 'birth_date', 'phone'];
 
+    public function address()
+    {
+        return $this->hasMany(Address::class, 'pessoa_id', 'id');
+    }
 }

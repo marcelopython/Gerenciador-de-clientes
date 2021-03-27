@@ -1,20 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: msr
- * Date: 25/03/21
- * Time: 00:34
- */
-
 namespace Kabum\App\Controller\Customer;
 
 
-use Kabum\App\Models\People;
+use Kabum\App\Models\Customer;
 use Kabum\App\Pre;
 use Kabum\App\ViewHTML;
 
 class CustomerController
 {
+
+    private $customer;
+
+    public function __construct()
+    {
+        $this->customer = new Customer();
+    }
 
     public function index()
     {
@@ -28,11 +28,31 @@ class CustomerController
 
     public function create(array $request)
     {
-
         $data = $request['data_request'];
-        echo (new People())->create($data);
-
-        exit;
-        Pre::pre($request);
+        $address = array_pop($data);
+        $people = $this->customer->create($data);
+        $people->address()->createMany($address);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

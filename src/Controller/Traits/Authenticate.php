@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: msr
- * Date: 25/03/21
- * Time: 12:16
- */
 
 namespace Kabum\App\Controller\Traits;
 
