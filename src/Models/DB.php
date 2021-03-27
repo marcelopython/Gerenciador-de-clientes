@@ -8,6 +8,11 @@ use Kabum\App\Pre;
 
 class DB extends DBAbstract
 {
+
+    protected string $table = '';
+
+    protected array $fields = [];
+
     protected \PDOStatement $stmt;
 
     protected int $lastInsertId;
@@ -31,6 +36,12 @@ class DB extends DBAbstract
             'INSERT INTO '.$this->table.'('.join(', ', $this->fields).') VALUES '.$this->paramnsSymbol.';'
         );
         return $this;
+    }
+
+    protected final function select($partSql = '')
+    {
+        $this->stmt = $this->connection->prepare('SELECT * FROM '.$this->table.$partSql);
+        $this->stmt->execute();
     }
 
     protected final function executeWithMultipleInsert(array $data): DBAbstract

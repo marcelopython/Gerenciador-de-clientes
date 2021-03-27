@@ -48,6 +48,7 @@ class Router implements RouterInterface
 
     public function get($url, $controller = [], \Closure $closure = null): Router
     {
+//        Pre::pre($url, false);
         $this->setRoute([['method'=>'GET', $url, !empty($controller) ? $controller : $closure, 'data_request'=>$_GET]]);
         return $this;
     }
@@ -73,6 +74,8 @@ class Router implements RouterInterface
     public function run()
     {
         foreach($this->routes as $route){
+//            Pre::pre([$route ], false);
+//            continue;
             if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->uri && $this->method === $route['method']){
                 $request = array_merge($this->server, ['data_request' => $route['data_request']]);
                 if($route[1] instanceof \Closure){
@@ -93,6 +96,7 @@ class Router implements RouterInterface
                 }
             }
         }
+        Pre::pre([]);
         return ViewHTML::view('http/404');
     }
 

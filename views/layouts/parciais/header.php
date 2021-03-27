@@ -13,6 +13,7 @@
         ?>
     </title>
     <link rel="stylesheet" href="<?=  (new \Kabum\App\Router())->asset('/css/bootstrap.css') ?>">
+    <link rel="stylesheet" href="<?=  (new \Kabum\App\Router())->asset('/css/fontawesome.css') ?>">
     <script src="<?=  (new \Kabum\App\Router())->asset('/js/jquery.js') ?>"></script>
 
 </head>

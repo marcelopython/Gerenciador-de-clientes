@@ -8,7 +8,6 @@ class Address{
             complement:'complement'
         }
         this.handleClickAddHtmlAddress();
-        console.log(window.location)
     }
 
     handleClickAddHtmlAddress(){

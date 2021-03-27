@@ -9,18 +9,12 @@ class Model extends DB implements ModelInterface, hasManyInterface
 {
     use Relationship;
 
-    protected string $table = '';
-
-    protected array $fields = [];
 
     private array $dataForm;
 
     public function where($field, $value, $condition = '=')
     {
-        $this->stmt = $this->connection->prepare(
-            'SELECT * FROM '.$this->table.' WHERE '.$field.' '.$condition." '".$value."' "
-        );
-        $this->stmt->execute();
+        $this->select(' WHERE '.$field.' '.$condition." '".$value."' ");
         return $this;
     }
 
@@ -32,6 +26,12 @@ class Model extends DB implements ModelInterface, hasManyInterface
     public function get()
     {
         return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function all()
+    {
+        $this->select();
+        return $this->get();
     }
 
     public function create(array $data)

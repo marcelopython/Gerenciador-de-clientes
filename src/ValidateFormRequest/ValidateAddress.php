@@ -9,7 +9,7 @@ class ValidateAddress implements FormRequestInterface
 
     private array $fields = ['people_id','cep','address','number','complement','neighborhood','city','state'];
 
-    public function validate(array $request)
+    public function validate(array &$request)
     {
         foreach($request as &$address) {
             $this->sanitize($address);

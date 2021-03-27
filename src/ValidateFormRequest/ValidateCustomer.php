@@ -12,7 +12,7 @@ class ValidateCustomer implements FormRequestInterface
         'name', 'cpf', 'rg', 'birth_date', 'phone'
     ];
 
-    public function validate(array $request)
+    public function validate(array &$request)
     {
         $this->sanitize($request);
         foreach($request as $key=> $data){
@@ -23,7 +23,6 @@ class ValidateCustomer implements FormRequestInterface
                 throw new \InvalidArgumentException('Dados inválidos!', 400);
             }
         }
-        return $request;
     }
 
     private function sanitize(array &$request)

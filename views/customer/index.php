@@ -2,7 +2,6 @@
 $title = 'Clientes';
 include __DIR__ . '/../layouts/section/section.php';
 ?>
-
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
@@ -11,7 +10,7 @@ include __DIR__ . '/../layouts/section/section.php';
             </div>
             <div class="card-body">
                 <table class="table">
-                    <caption>List of users</caption>
+                    <caption>Lista de clientes</caption>
                     <thead>
                     <tr>
                         <th scope="col">Cliente</th>
@@ -23,19 +22,23 @@ include __DIR__ . '/../layouts/section/section.php';
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">Nome do cliente</th>
-                        <td>24/06/1996</td>
-                        <td>703.73054130</td>
-                        <td>@62984357539</td>
-                        <td>62984357539</td>
-                        <td>
-                        </td>
-                    </tr>
+                    <?php foreach ($customers as $customer){ ?>
+                        <tr>
+                            <th scope="row"><?=$customer['name']?></th>
+                            <td><?=$customer['birth_date']?></td>
+                            <td><?=$customer['cpf']?></td>
+                            <td><?=$customer['rg']?></td>
+                            <td><?=$customer['phone']?></td>
+                            <td>
+                                <a href="<?=$_SERVER['SCRIPT_NAME'].'/customer/edit/'.$customer['id']?>">
+                                    Editar
+                                </a>
+                            </td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>

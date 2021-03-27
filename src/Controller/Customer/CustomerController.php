@@ -1,7 +1,6 @@
 <?php
 namespace Kabum\App\Controller\Customer;
 
-
 use Kabum\App\Models\ContractModel\CustomerInterface;
 use Kabum\App\Models\Customer;
 use Kabum\App\Pre;
@@ -29,11 +28,18 @@ class CustomerController
 
     public function index()
     {
-        return ViewHTML::view('customer/index');
+        $customers = $this->customer->all();
+        return ViewHTML::view('customer/index', ['customers'=>$customers]);
     }
 
     public function form()
     {
+        return ViewHTML::view('customer/create');
+    }
+
+    public function edit(array $request, int $id)
+    {
+        Pre::pre($id);
         return ViewHTML::view('customer/create');
     }
 
