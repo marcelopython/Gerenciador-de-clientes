@@ -16,6 +16,8 @@ abstract class Request
 
     protected string $scriptName;
 
+    protected string $requestSelf;
+
     protected string $protocol;
 
     protected array $type = [];
@@ -27,6 +29,7 @@ abstract class Request
         $this->server = $_SERVER;
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->scriptName = $_SERVER['SCRIPT_NAME'];
+        $this->requestSelf = $_SERVER['PHP_SELF'];
         $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
     }
 }

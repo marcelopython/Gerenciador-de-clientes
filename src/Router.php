@@ -55,7 +55,7 @@ class Router extends Request implements RouterInterface
         $parameters = [];
         foreach($this->routes as $route){
             $this->getParameters($route, $pathInfoItems, $parameters);
-            if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->uri && $this->method === $route['method']){
+            if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->requestSelf && $this->method === $route['method']){
                 if(!empty($this->methodsForCsrf[$this->method])){
                     if(empty($route['data_request']['_token']) || Csrf::csrf() !== $route['data_request']['_token']){
                         $this->redirectTo('http/401', 401);
@@ -93,13 +93,17 @@ class Router extends Request implements RouterInterface
 
     public function getParameters(array &$route, array $pathInfoItems, array &$parameters)
     {
+
         if (strpos($route[0], '[$')) {
             $pathWithParameters = explode('/', $route[0]);
-            foreach($pathInfoItems as $key => $path){
-                if (strpos($pathWithParameters[$key], '[$') !== false) {
+            foreach($pathWithParameters as $key => $path){
+                if(empty($pathInfoItems[$key])){
+                    return;
+                }
+                if (strpos($pathInfoItems[$key], '[$') !== false) {
                     continue;
                 }
-                if($pathWithParameters[$key] !== $path){
+                if ($pathInfoItems[$key] !== $path) {
                     return;
                 }
             }
