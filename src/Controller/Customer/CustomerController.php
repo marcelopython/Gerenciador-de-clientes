@@ -72,6 +72,7 @@ class CustomerController
             (new AddressBo())->update($customerBd, $address);
             $customerBd->commit();
             (new Router())->redirectTo('customer');
+
         }catch(\PDOException $e){
             Pre::pre($e->getMessage());
             $customerBd->rollback();
@@ -81,6 +82,28 @@ class CustomerController
             $customerBd->rollback();
         }
     }
+
+    public function delete(array $request, int $id)
+    {
+        $customer = $this->customer->beginTransaction();
+        try {
+            $customer->find($id);
+            $customer->address()->deleteMany();
+            $customer->delete($id);
+            $customer->commit();
+        }catch (\PDOException $e){
+            Pre::pre($e->getMessage());
+            $customer->rollback();
+
+        }catch (\Exception $e){
+            Pre::pre($e->getMessage());
+            $customer->rollback();
+
+        }finally {
+            (new Router())->redirectTo('customer');
+        }
+    }
+
 }
 
 

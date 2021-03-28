@@ -3,6 +3,7 @@
 namespace Kabum\App\Models;
 use Kabum\App\Models\ContractModel\hasManyInterface;
 use Kabum\App\Models\ContractModel\ModelInterface;
+use Kabum\App\Pre;
 
 class Model extends DB implements ModelInterface, hasManyInterface
 {
@@ -10,7 +11,7 @@ class Model extends DB implements ModelInterface, hasManyInterface
 
     public array $data;
 
-    public function where($field, $value, $condition = '=')
+    public function where($field, $value, $condition = '='): ModelInterface
     {
         $this->select(' WHERE '.$field.' '.$condition." '".$value."' ");
         return $this;
@@ -40,7 +41,7 @@ class Model extends DB implements ModelInterface, hasManyInterface
         return $this->get();
     }
 
-    public function create(array $data)
+    public function create(array $data): ModelInterface
     {
         try {
             $this->sort($data);
@@ -71,8 +72,8 @@ class Model extends DB implements ModelInterface, hasManyInterface
     public function createMany(array $data): Model
     {
         $this->addIdRelationship($data);
-        $this->sortRecursive($data);
-        $this->paramsSymbolValues($data);
+        $this->sortWithMultipleItems($data);
+        $this->multiplesParamsSymbol($data);
         $this->prepareInsert();
         $this->executeWithMultipleParam($data);
         $this->lastInsertId = $this->connection->lastInsertId();
@@ -88,11 +89,31 @@ class Model extends DB implements ModelInterface, hasManyInterface
         return $this;
     }
 
-    public function deleteMany(array $values = []): void
+    public function deleteMany(): void
+    {
+        $this->columns = [$this->key];
+        $values = $this->getDataRelation();
+        $ids = array_map(function ($item) {
+            if ($item[$this->key]) {
+                return $item[$this->key];
+            }
+        }, $values);
+        $this->deleteIn($ids);
+    }
+
+    public function deleteIn(array $values = []): void
     {
         $this->paramnsSymbol($values);
         $this->prepareDeleteMultiple();
         $this->executeWithMultipleDelete($values);
+    }
+
+    public function delete(int $id): Model
+    {
+        $this->prepareDelete();
+        $this->executeWithParam([$id]);
+        $this->lastInsertId = $id;
+        return $this;
     }
 
     public function getDataRelation(): array

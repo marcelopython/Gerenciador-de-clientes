@@ -23,6 +23,8 @@ class DB extends DBAbstract
 
     protected \PDO $connection;
 
+    protected array $columns  = ['*'];
+
     public function __construct()
     {
         $this->connection = Connection::connect();
@@ -35,7 +37,7 @@ class DB extends DBAbstract
 
     protected final function prepareDelete(): DBAbstract
     {
-        $this->stmt = $this->connection->prepare('DELETE FROM '.$this->table.' WHERE '.$this->key.'?');
+        $this->stmt = $this->connection->prepare('DELETE FROM '.$this->table.' WHERE '.$this->key.' = ?');
         return $this;
     }
 
@@ -65,7 +67,7 @@ class DB extends DBAbstract
 
     protected final function select($partSql = '')
     {
-        $this->stmt = $this->connection->prepare('SELECT * FROM '.$this->table.$partSql);
+        $this->stmt = $this->connection->prepare('SELECT '.join(', ', $this->columns).' FROM '.$this->table.$partSql);
         $this->stmt->execute();
         try {
             $this->validationPdo();
@@ -125,6 +127,9 @@ class DB extends DBAbstract
         return $this;
     }
 
+    /**
+     * Organiza as chaves do array para ser inserida na ordem correta
+     * */
     protected final function sort(array &$data): DBAbstract
     {
         asort($this->fields);
@@ -132,7 +137,10 @@ class DB extends DBAbstract
         return $this;
     }
 
-    protected final function sortRecursive(array &$data): DBAbstract
+    /**
+     * Organiza as chaves do array que tenha um ou mais items para ser inserida na ordem correta
+     * */
+    protected final function sortWithMultipleItems(array &$data): DBAbstract
     {
         asort($this->fields);
         foreach($data as $key => &$value){
@@ -141,6 +149,11 @@ class DB extends DBAbstract
         return $this;
     }
 
+    /**
+     * Criar os simbolos de parametros para ser inserirdo na query
+     * Por default o simbolo e ?
+     * * EX: (?,?,?)
+     */
     protected final function paramnsSymbol(array $fields = []): DBAbstract
     {
         $filedToCount = [];
@@ -157,7 +170,12 @@ class DB extends DBAbstract
         return $this;
     }
 
-    protected final function paramsSymbolValues(array $data): DBAbstract
+    /**
+     * Criar os simbolos de multiplos value parametros para ser inserirdo na query
+     * Por default o simbolo e ?
+     * EX: (?,?,?),(?,?,?)
+     */
+    protected final function multiplesParamsSymbol(array $data): DBAbstract
     {
         $this->paramnsSymbol();
         $this->paramnsSymbol = str_pad($this->paramnsSymbol,
@@ -166,11 +184,11 @@ class DB extends DBAbstract
         );
         return $this;
     }
+
     public function beginTransaction()
     {
         $this->connection->beginTransaction();
         return $this;
-
     }
 
     public function commit()

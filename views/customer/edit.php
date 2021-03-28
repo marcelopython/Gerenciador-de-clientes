@@ -24,7 +24,7 @@ include __DIR__ . '/../layouts/section/section.php';
                         <div class="col-md-2">
                             <label for="rg">RG</label>
                             <input type="number" class="form-control" name="rg" id="rg" required autocomplete="no"
-                                   value="<?=$customer['rg']?>" maxlength="7">
+                                   value="<?=$customer['rg']?>">
                         </div>
                         <div class="col-md-2">
                             <label for="birth_date">Data Nascimento</label>
@@ -54,7 +54,7 @@ include __DIR__ . '/../layouts/section/section.php';
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-end">
-                        <button class="btn btn-success align-right">Salvar</button>
+                        <button class="btn btn-success align-right">Atualizar</button>
                     </div>
                 </form>
             </div>

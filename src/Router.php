@@ -49,7 +49,7 @@ class Router extends Request implements RouterInterface
 
     public function run()
     {
-        $pathInfoItems = explode('/', $this->server['PATH_INFO']);
+        $pathInfoItems = explode('/', $this->server['PATH_INFO'] ?? $this->server['REQUEST_URI']);
         $parameters = [];
         foreach($this->routes as $route){
             $this->getParameters($route, $pathInfoItems, $parameters);

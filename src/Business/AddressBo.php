@@ -31,7 +31,7 @@ class AddressBo
                 $addressesData->createMany($newAddress);
             }
             if (!empty($addressDeleted)) {
-                $addressesData->deleteMany($addressDeleted);
+                $addressesData->deleteIn($addressDeleted);
             }
             $oldAddress = $this->getOldAddressInformEdit($address);
             $addressesData->updateMany($oldAddress);

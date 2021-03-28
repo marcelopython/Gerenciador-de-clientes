@@ -13,12 +13,17 @@ abstract class DBAbstract
 
     protected abstract function sort(array &$data): DBAbstract;
 
-    protected abstract function sortRecursive(array &$data): DBAbstract;
+    protected abstract function sortWithMultipleItems(array &$data): DBAbstract;
 
     protected abstract function paramnsSymbol(array $fields): DBAbstract;
 
-    protected abstract function paramsSymbolValues(array $data): DBAbstract;
+    protected abstract function multiplesParamsSymbol(array $data): DBAbstract;
 
     protected abstract function prepareUpdate(string $condition = '='): DBAbstract;
+
+    protected abstract function prepareDelete(): DBAbstract;
+
+    protected abstract function prepareDeleteMultiple(): DBAbstract;
+
 
 }

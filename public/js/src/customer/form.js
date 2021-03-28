@@ -105,10 +105,45 @@ class Address{
             <hr>    
         </div>
         </div>
-
 `;
     }
 
 }
 
+
+class Customer{
+
+    constructor() {
+        this.handleKeyUpRg()
+        this.handleKeyUpCpf()
+        this.handleKeyUpPhone();
+    }
+
+    handleKeyUpRg(){
+        $('#rg').keyup((event)=>{
+            if(event.target.value.length > 7) {
+                event.target.value = event.target.value.slice(0, -1)
+            }
+        });
+    }
+
+    handleKeyUpCpf(){
+        $('#cpf').keyup((event)=>{
+            if(event.target.value.length > 11) {
+                event.target.value = event.target.value.slice(0, -1)
+            }
+        });
+    }
+
+    handleKeyUpPhone(){
+        $('#phone').keyup((event)=>{
+            if(event.target.value.length > 11) {
+                event.target.value = event.target.value.slice(0, -1)
+            }
+        });
+    }
+
+}
+
 new Address();
+new Customer();
