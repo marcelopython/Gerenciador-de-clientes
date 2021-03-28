@@ -27,6 +27,11 @@ class Model extends DB implements ModelInterface, hasManyInterface
         return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function count(): int
+    {
+        return $this->stmt->rowCount();
+    }
+
     public function find(int $id): Model
     {
         $this->where($this->key, $id, '=');
@@ -99,6 +104,32 @@ class Model extends DB implements ModelInterface, hasManyInterface
             }
         }, $values);
         $this->deleteIn($ids);
+    }
+
+    public function paginate($offset = 0, $limit = 3)
+    {
+        if($offset <= 1){
+            $offset = 0;
+        }elseif($offset < $limit){
+            $offset =  $limit;
+        }elseif($offset == $limit){
+            $offset =  $limit+$offset;
+        }else{
+            $offset =  $limit+$offset +2;
+        }
+        $this->select(' LIMIT '.$limit.' OFFSET '.$offset);
+        $items = $this->get();
+        $this->select();
+        $totalItem = $this->count();
+        $selfPath = $_SERVER['PHP_SELF'];
+        $link = [];
+        for($i = 1; $i <= ceil($totalItem/$limit); $i ++){
+            $link[] = $selfPath.'?page='.$i;
+        }
+        return [
+            'items'=>$items,
+            'links'=>$link
+        ];
     }
 
     public function deleteIn(array $values = []): void

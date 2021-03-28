@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: msr
- * Date: 24/03/21
- * Time: 22:03
- */
 
 namespace Kabum\App;
 

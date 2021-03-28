@@ -4,12 +4,20 @@ namespace Kabum\App;
 
 use Kabum\App\Contracts\RouterInterface;
 
+/**
+ * Class Router
+ * @package Kabum\App
+ * Classe responsável por chamar o controller da requisiçao
+ */
 class Router extends Request implements RouterInterface
 {
     private array $routes = [];
 
     private array $methodsForCsrf = ['POST'=>'POST'];
 
+    /**
+     *Buscar arquivos staticos css, js ....
+     */
     public function asset(string $path): string
     {
         $paths = explode('/', $this->scriptName);
@@ -25,18 +33,27 @@ class Router extends Request implements RouterInterface
         $this->routes = array_merge($this->routes, $route);
     }
 
+    /**
+     *Metodo para requisiçao http GET
+     */
     public function get($url, $controller = [], \Closure $closure = null): Router
     {
         $this->setRoute([['method'=>'GET', $url, !empty($controller) ? $controller : $closure, 'data_request'=>$_GET]]);
         return $this;
     }
 
+    /**
+     *Metodo para requisiçao http POST
+     */
     public function post($url, $controller = []): Router
     {
         $this->setRoute([['method'=>'POST',$url, $controller, 'data_request'=>$_POST]]);
         return $this;
     }
 
+    /**
+    *Metodo para setar o middlewware nas rotas selecionadas
+     */
     public function middleware(array $middlewares, \Closure $func)
     {
         $urlsInMiddleware = $func();
@@ -49,6 +66,9 @@ class Router extends Request implements RouterInterface
         }
     }
 
+    /**
+     * Inicia a buscar o controller da requisiçao
+     */
     public function run()
     {
         $pathInfoItems = explode('/', $this->server['PATH_INFO'] ?? $this->server['REQUEST_URI']);
@@ -74,6 +94,9 @@ class Router extends Request implements RouterInterface
         return ViewHTML::view('http/404');
     }
 
+    /**
+     * Obtem o controller da requisiçao
+     */
     public function getController(array $route, array $request, array $parameters)
     {
         $controller = $route[1][0];
@@ -91,6 +114,10 @@ class Router extends Request implements RouterInterface
         }
     }
 
+    /**
+     * Pega o parametro esquecificado na configuraçao de rotas por default o coringa  e [$parametro]
+     * ex: /customer/delete/[$id]
+     */
     public function getParameters(array &$route, array $pathInfoItems, array &$parameters)
     {
 
@@ -118,7 +145,9 @@ class Router extends Request implements RouterInterface
         }
 
     }
-
+    /**
+     * Valida o tipo de parametro setado na url
+     * */
     public function validateTypeParameters($param)
     {
         foreach ($this->type as $type) {

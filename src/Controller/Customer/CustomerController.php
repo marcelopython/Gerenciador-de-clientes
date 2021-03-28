@@ -27,9 +27,15 @@ class CustomerController
         $this->ValidateAddress = new  ValidateAddress();
     }
 
-    public function index()
+    public function index($request)
     {
-        $customers = $this->customer->all();
+//        Pre::pre($request);
+//        $customers = $this->customer->all();
+        if(!empty($request['data_request']['page'])){
+            $customers = $this->customer->paginate($request['data_request']['page']);
+        }else{
+            $customers = $this->customer->paginate();
+        }
         return ViewHTML::view('customer/index', ['customers'=>$customers]);
     }
 

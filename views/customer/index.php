@@ -14,6 +14,7 @@ include __DIR__ . '/../layouts/section/section.php';
                 <table class="table">
                     <thead>
                     <tr>
+                        <th scope="col">id</th>
                         <th scope="col">Cliente</th>
                         <th scope="col">Data Nascimento</th>
                         <th scope="col">CPF</th>
@@ -23,8 +24,9 @@ include __DIR__ . '/../layouts/section/section.php';
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($customers as $customer){ ?>
+                    <?php foreach ($customers['items'] as $customer){ ?>
                         <tr>
+                            <th scope="row"><?=$customer['id']?></th>
                             <th scope="row"><?=$customer['name']?></th>
                             <td><?=date('d/m/Y', strtotime($customer['birth_date']))?></td>
                             <td><?=$customer['cpf']?></td>
@@ -53,7 +55,9 @@ include __DIR__ . '/../layouts/section/section.php';
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <?php foreach($customers['links'] as $key => $links){ ?>
+                            <li class="page-item"><a class="page-link" href="<?=$links?>"><?=$key+1?></a></li>
+                        <?php } ?>
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
