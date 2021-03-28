@@ -36,7 +36,7 @@ include __DIR__ . '/../layouts/section/section.php';
                                 </a>
                                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/delete/'.$customer['id']?>" method="post">
                                     <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
-                                    <button class="btn">
+                                    <button class="btn btn-remove-customer" type="button">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -56,4 +56,6 @@ include __DIR__ . '/../layouts/section/section.php';
             </div>
         </div>
     </div>
+    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/index.js') ?>"></script>
+
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>
