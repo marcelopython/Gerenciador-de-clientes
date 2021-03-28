@@ -11,22 +11,20 @@ include __DIR__ . '/../layouts/section/section.php';
             </div>
             <div class="card-body">
                 <?php include __DIR__ . '/../component/message.php';?>
-                <table class="table">
+                <table class="table table-responsive">
                     <thead>
-                    <tr>
-                        <th scope="col">id</th>
-                        <th scope="col">Cliente</th>
-                        <th scope="col">Data Nascimento</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">RG</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Ação</th>
-                    </tr>
+                        <tr>
+                            <th scope="col" class="w-50">Cliente</th>
+                            <th scope="col">Data Nascimento</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">RG</th>
+                            <th scope="col">Telefone</th>
+                            <th scope="col">Ação</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($customers['items'] as $customer){ ?>
                         <tr>
-                            <th scope="row"><?=$customer['id']?></th>
                             <th scope="row"><?=$customer['name']?></th>
                             <td><?=date('d/m/Y', strtotime($customer['birth_date']))?></td>
                             <td><?=$customer['cpf']?></td>
@@ -47,25 +45,14 @@ include __DIR__ . '/../layouts/section/section.php';
                     <?php } ?>
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <?php foreach($customers['links'] as $key => $links){ ?>
-                            <li class="page-item"><a class="page-link" href="<?=$links?>"><?=$key+1?></a></li>
-                        <?php } ?>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <?php if(!isset($customer)){ ?>
+                    <div class="alert alert-info">Não há cliente cadastrado</div>
+                <?php }?>
+                <?php
+                    if(!empty($customers['items'])) {
+                        include __DIR__ . '/../component/pagination.php';
+                    }
+                ?>
             </div>
         </div>
     </div>

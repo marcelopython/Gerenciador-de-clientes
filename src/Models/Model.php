@@ -106,16 +106,12 @@ class Model extends DB implements ModelInterface, hasManyInterface
         $this->deleteIn($ids);
     }
 
-    public function paginate($offset = 0, $limit = 3)
+    public function paginate($offset = 0, $limit = 10)
     {
         if($offset <= 1){
             $offset = 0;
-        }elseif($offset < $limit){
-            $offset =  $limit;
-        }elseif($offset == $limit){
-            $offset =  $limit+$offset;
         }else{
-            $offset =  $limit+$offset +2;
+            $offset =  ($limit*$offset)-$limit;
         }
         $this->select(' LIMIT '.$limit.' OFFSET '.$offset);
         $items = $this->get();

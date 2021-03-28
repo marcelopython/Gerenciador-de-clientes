@@ -124,11 +124,11 @@ class Router extends Request implements RouterInterface
         if (strpos($route[0], '[$')) {
             $pathWithParameters = explode('/', $route[0]);
             foreach($pathWithParameters as $key => $path){
-                if(empty($pathInfoItems[$key])){
-                    return;
-                }
-                if (strpos($pathInfoItems[$key], '[$') !== false) {
+                if (strpos($pathWithParameters[$key], '[$') !== false) {
                     continue;
+                }
+                if(!isset($pathInfoItems[$key])){
+                    return;
                 }
                 if ($pathInfoItems[$key] !== $path) {
                     return;

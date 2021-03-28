@@ -4,7 +4,6 @@ namespace Kabum\App\Controller\Customer;
 use Kabum\App\Business\AddressBo;
 use Kabum\App\Models\ContractModel\CustomerInterface;
 use Kabum\App\Models\Customer;
-use Kabum\App\Pre;
 use Kabum\App\Router;
 use Kabum\App\Session;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
@@ -29,10 +28,12 @@ class CustomerController
 
     public function index($request)
     {
-//        Pre::pre($request);
-//        $customers = $this->customer->all();
         if(!empty($request['data_request']['page'])){
-            $customers = $this->customer->paginate($request['data_request']['page']);
+            if(is_numeric($request['data_request']['page'])) {
+                $customers = $this->customer->paginate($request['data_request']['page']);
+            }else{
+                return (new Router())->redirectTo('http/404');
+            }
         }else{
             $customers = $this->customer->paginate();
         }
