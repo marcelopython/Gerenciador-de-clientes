@@ -4,6 +4,7 @@ namespace Kabum\App\ValidateFormRequest;
 
 use Kabum\App\Pre;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
+use MongoDB\BSON\Persistable;
 
 class ValidateCustomer implements FormRequestInterface
 {
@@ -20,6 +21,13 @@ class ValidateCustomer implements FormRequestInterface
         foreach($request as $key=> $data){
             if(empty($data)){
                 throw new \InvalidArgumentException('Por favor preencha os dados obrigatório do cliente', 400);
+            }
+            if($key === 'cpf'){
+                try {
+                    $this->validateCPF($data);
+                }catch (\InvalidArgumentException $e){
+                    throw new \InvalidArgumentException($e->getMessage(), 400);
+                }
             }
             if(!empty($this->sizeFields[$key])){
                 if(strlen($data) > $this->sizeFields[$key]){
@@ -44,6 +52,27 @@ class ValidateCustomer implements FormRequestInterface
                 'phone'=>FILTER_SANITIZE_NUMBER_INT
             ])
         );
+    }
+
+    private function validateCPF(int $cpf)
+    {
+        $cpf = preg_replace('/[^0-9]/is', '', $cpf);
+        if (strlen($cpf) != 11) {
+            throw  new \InvalidArgumentException('CPF inválido', 400);
+        }
+        if (preg_match('/(\d)\1{10}/', $cpf)) {
+            throw  new \InvalidArgumentException('CPF inválido', 400);
+        }
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf[$c] != $d) {
+                throw  new \InvalidArgumentException('CPF inválido', 400);
+            }
+        }
+        return true;
     }
 
 }

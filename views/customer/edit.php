@@ -9,6 +9,7 @@ include __DIR__ . '/../layouts/section/section.php';
                 <a href="<?=$_SERVER['SCRIPT_NAME'].'/customer'?>" class="btn btn-danger">Voltar</a>
             </div>
             <div class="card-body">
+                <?php include __DIR__ . '/../component/message.php';?>
                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/update/'.$customer['id']?>" method="post">
                     <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
                     <div class="form-row">

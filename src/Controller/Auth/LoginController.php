@@ -6,6 +6,7 @@ namespace Kabum\App\Controller\Auth;
 use Kabum\App\Controller\Traits\Authenticate;
 use Kabum\App\Models\User;
 use Kabum\App\Models\ContractModel\UserInterface;
+use Kabum\App\Pre;
 use Kabum\App\Router;
 use Kabum\App\Session;
 use Kabum\App\ViewHTML;
@@ -26,7 +27,7 @@ class LoginController
     {
         $user = Session::get('user');
         if($user){
-            (new Router())->redirectTo('dashboard');
+            return (new Router())->redirectTo('dashboard');
         }
         return ViewHTML::view('auth/login');
     }
@@ -35,9 +36,9 @@ class LoginController
     {
         $data = $request['data_request'];
         if($this->check($data)){
-            (new Router())->redirectTo('dashboard');
+            return (new Router())->redirectTo('dashboard');
         }
-        (new Router())->redirectTo($this->redirectNotAuthenticate);
+        return (new Router())->redirectTo($this->redirectNotAuthenticate);
     }
 
 }

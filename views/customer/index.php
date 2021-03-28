@@ -1,7 +1,5 @@
 <?php
 $title = 'Clientes';
-//\Kabum\App\Pre::pre(\Kabum\App\Csrf::csrf());
-//958944b9059130a57410d09db7efc493d061e00de590ae872d4f9b3589bf8c9b
 include __DIR__ . '/../layouts/section/section.php';
 ?>
     <div class="container mt-3">
@@ -29,7 +27,7 @@ include __DIR__ . '/../layouts/section/section.php';
                     <?php foreach ($customers as $customer){ ?>
                         <tr>
                             <th scope="row"><?=$customer['name']?></th>
-                            <td><?=$customer['birth_date']?></td>
+                            <td><?=date('d/m/Y', strtotime($customer['birth_date']))?></td>
                             <td><?=$customer['cpf']?></td>
                             <td><?=$customer['rg']?></td>
                             <td><?=$customer['phone']?></td>
@@ -51,6 +49,4 @@ include __DIR__ . '/../layouts/section/section.php';
             </div>
         </div>
     </div>
-<!--    fas fa-reply-->
-<!--fas fa-share-square	-->
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>

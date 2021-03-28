@@ -11,6 +11,7 @@
             </li>
         </ul>
         <form action="<?=$_SERVER['SCRIPT_NAME'].'/logout'?>" method="post">
+            <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
             <button class="btn btn-info" href="#">Sair</button>
         </form>
     </div>

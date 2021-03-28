@@ -28,6 +28,5 @@ abstract class Request
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->scriptName = $_SERVER['SCRIPT_NAME'];
         $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-        Csrf::setCsrf();
     }
 }

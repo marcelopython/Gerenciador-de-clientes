@@ -99,7 +99,7 @@ class CustomerController
         }catch(\PDOException $e){
             Session::session('error', 'Falha ao atualizar registros');
             $customerBd->rollback();
-            (new Router())->redirectTo('customer/update/'.$id);
+            (new Router())->redirectTo('customer/edit/'.$id);
 
         }catch(\Exception $e){
             if($e->getCode() === 400) {
@@ -108,14 +108,14 @@ class CustomerController
                 Session::session('error', 'Ocorreu um erro inesperado');
             }
             $customerBd->rollback();
-            (new Router())->redirectTo('customer/update/'.$id);
+            (new Router())->redirectTo('customer/edit/'.$id);
 
         }catch(\InvalidArgumentException $e){
             if($e->getCode() === 400) {
                 Session::session('warning', $e->getMessage());
             }
             $customerBd->rollback();
-            (new Router())->redirectTo('customer/update/'.$id);
+            (new Router())->redirectTo('customer/edit/'.$id);
         }
     }
 

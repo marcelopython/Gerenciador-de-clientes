@@ -64,6 +64,7 @@ class Router extends Request implements RouterInterface
                     unset($route['data_request']['_token']);
                 }
                 $request = array_merge($this->server, ['data_request' => $route['data_request']]);
+                Csrf::setCsrf();
                 if($route[1] instanceof \Closure){
                     return $route[1]($request);
                 }
