@@ -41,11 +41,15 @@
         <input autocomplete="no" type="text" class="form-control form-address" name="address[<?=$index?>][city]"
                data-name="city"  id="address[<?=$index?>][city]" maxlength="60"  value="<?=$address['city']?>">
     </div>
+    
     <div class="form-group col-md-3">
         <label for="address[<?=$index?>][state]">Estado</label>
         <select type="text" class="form-control form-address" name="address[<?=$index?>][state]"
                 data-name="state" id="address[<?=$index?>][state]" autocomplete="no">
-            <option value="GO">GO</option>
+            <option value="">Estados</option>
+            <?php foreach($states as $key => $state) {?>
+                <option value="<?=$key?>" <?=$key == $address['state'] ? 'selected' : ''?> ><?=$state?></option>
+            <?php } ?>
         </select>
     </div>
 </div>

@@ -10,14 +10,16 @@ class AddressBo
 {
     private FormRequestInterface $ValidateAddress;
 
+    public static array $states = [
+        'AC'=>'Acre','AL'=>'Alagoas','AP'=>'Amapá','AM'=>'Amazonas','BA'=>'Bahia','CE'=>'Ceará','ES'=>'Espírito Santo',
+        'GO'=>'Goiás','MA'=>'Maranhão','MT'=>'Mato Grosso','MS'=>'Mato Grosso do Sul','MG'=>'Minas Gerais',
+        'PA'=>'Pará','PB'=>'Paraíba','PR'=>'Paraná','PE'=>'Pernambuco','PI'=>'Piauí','RN'=>'Rio Grande do Norte',
+        'RS'=>'Rio Grande do Sul','RO'=>'Rondônia','SC'=>'Santa Catarina','SE'=>'Sergipe','DF'=>'Distrito Federal',
+    ];
+
     public function __construct()
     {
         $this->ValidateAddress = new  ValidateAddress();
-    }
-
-    public function create(array $request)
-    {
-        $this->ValidateAddress->validate($address);
     }
 
     public function update(CustomerInterface $customerBd, array $address)

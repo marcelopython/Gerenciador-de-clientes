@@ -3,6 +3,12 @@
 class Address{
 
     constructor() {
+        this.states = {
+            'AC':'Acre', 'AL':'Alagoas', 'AP':'Amapá', 'AM':'Amazonas', 'BA':'Bahia', 'CE':'Ceará', 'ES':'Espírito Santo',
+            'GO':'Goiás', 'MA':'Maranhão', 'MT':'Mato Grosso', 'MS':'Mato Grosso do Sul', 'MG':'Minas Gerais',
+            'PA':'Pará', 'PB':'Paraíba', 'PR':'Paraná', 'PE':'Pernambuco', 'PI':'Piauí', 'RN':'Rio Grande do Norte',
+            'RS':'Rio Grande do Sul', 'RO':'Rondônia', 'SC':'Santa Catarina', 'SE':'Sergipe', 'DF':'Distrito Federal',
+        }
         this.indexFormAdrress = null;
         this.setLastNumberItemForm();
         this.notObligatory = {
@@ -58,6 +64,11 @@ class Address{
 
     getLastHtmlAddress(){
         this.indexFormAdrress ++;
+
+        let htmlOptionsState = '';
+        for (let state in this.states){
+            htmlOptionsState += `<option value="${state}">${this.states[state]}</option>`;
+        }
         return `
         <div id="address-item-${this.indexFormAdrress}" class="form-row col-12 p-0">
             <div class="col-12">
@@ -98,16 +109,15 @@ class Address{
             <div class="form-group col-md-3">
                 <label for="address[${this.indexFormAdrress}][state]">Estado</label>
                 <select type="text" class="form-control form-address" name="address[${this.indexFormAdrress}][state]" id="address[${this.indexFormAdrress}][state]" autocomplete="no">
-                    <option value="GO">GO</option>
+                    <option value="">Estados</option>
+                    ${htmlOptionsState}
                 </select>
             </div>
         <div class="col-12">
             <hr>    
         </div>
-        </div>
-`;
+        </div>`;
     }
-
 }
 
 

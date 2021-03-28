@@ -42,7 +42,8 @@ class CustomerController
 
     public function form()
     {
-        return ViewHTML::view('customer/create');
+        $states = AddressBo::$states;
+        return ViewHTML::view('customer/create', ['states'=>$states]);
     }
 
     public function create(array $request)
@@ -87,7 +88,8 @@ class CustomerController
         $customer = $this->customer->find($id);
         $dataCustomer = $customer->data;
         $addresses = $customer->address()->getDataRelation();
-        return ViewHTML::view('customer/edit', ['customer'=>$dataCustomer, 'addresses'=>$addresses]);
+        $states = AddressBo::$states;
+        return ViewHTML::view('customer/edit', ['customer'=>$dataCustomer, 'addresses'=>$addresses, 'states'=>$states]);
     }
 
     public function update(array $request, int $id)
