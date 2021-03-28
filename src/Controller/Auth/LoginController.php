@@ -38,6 +38,7 @@ class LoginController
         if($this->check($data)){
             return (new Router())->redirectTo('dashboard');
         }
+        Session::session('warning', 'E-mail ou senha inválido');
         return (new Router())->redirectTo($this->redirectNotAuthenticate);
     }
 
