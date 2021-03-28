@@ -1,7 +1,7 @@
 <?php
 use \Kabum\App\Router;
 use \Kabum\App\Controller\Customer\CustomerController;
-
+use \Kabum\App\Controller\Auth\LoginController;
 $route = new Router();
 $GLOBALS['router']  = $route;
 
@@ -13,11 +13,12 @@ $route->get('', [], function() use ($route){
     $route->redirectTo('login');
 });
 
-$route->get('/login', [\Kabum\App\Controller\Auth\LoginController::class, 'loginForm']);
-$route->post('/login', [\Kabum\App\Controller\Auth\LoginController::class, 'login']);
+$route->get('/login', [LoginController::class, 'loginForm']);
+$route->post('/login', [LoginController::class, 'login']);
 
 $route->middleware([\Kabum\App\Middleware\AuthMiddleware::class], function() use ($route){
     $route->get('/dashboard', [\Kabum\App\Controller\Dashboard\DashboardController::class, 'index']);
+    $route->post('/logout', [\Kabum\App\Controller\Auth\LogoutController::class, 'logout']);
 
     /*Rotas de clientes*/
     $route->get('/customer', [CustomerController::class, 'index']);

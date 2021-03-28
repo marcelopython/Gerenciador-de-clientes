@@ -1,6 +1,7 @@
 <?php
 namespace Kabum\App\Controller\Customer;
 
+use Kabum\App\Business\AddressBo;
 use Kabum\App\Models\ContractModel\CustomerInterface;
 use Kabum\App\Models\Customer;
 use Kabum\App\Pre;
@@ -12,7 +13,6 @@ use Kabum\App\ViewHTML;
 
 class CustomerController
 {
-
     private CustomerInterface $customer;
 
     private FormRequestInterface $ValidateCustomer;
@@ -63,76 +63,24 @@ class CustomerController
 
     public function update(array $request, int $id)
     {
-        $peopleDB = $this->customer->beginTransaction();
+        $customerBd = $this->customer->beginTransaction();
         try {
             $customer = $request['data_request'];
             $address = array_pop($customer);
             $this->ValidateCustomer->validate($customer);
-            $this->ValidateAddress->validate($address);
-            $peopleDB->update($customer, $id);
-            $newAddress = $this->getNewAddressInformEdit($address);
-            $addressesData = $peopleDB->address();
-            $addressDeleted = $this->getAddressDeletedItTheFormEdit($addressesData->getDataRelation(), $address);
-            if(!empty($newAddress)) {
-                $addressesData->createMany($newAddress);
-            }
-            if(!empty($addressDeleted)) {
-                $addressesData->deleteMany($addressDeleted);
-            }
-            $oldAddress = $this->getOldAddressInformEdit($address);
-            $addressesData->updateMany($oldAddress);
-            $peopleDB->commit();
+            $customerBd->update($customer, $id);
+            (new AddressBo())->update($customerBd, $address);
+            $customerBd->commit();
             (new Router())->redirectTo('customer');
         }catch(\PDOException $e){
             Pre::pre($e->getMessage());
-            $peopleDB->rollback();
+            $customerBd->rollback();
 
         }catch(\Exception $e){
             Pre::pre($e->getMessage());
-            $peopleDB->rollback();
+            $customerBd->rollback();
         }
     }
-
-    public function getNewAddressInformEdit(array $address): array
-    {
-        return array_filter(
-            array_map(function($address){
-                if(empty($address['id'])){
-                    return $address;
-                }
-            }, $address)
-        );
-    }
-
-    public function getOldAddressInformEdit(array $address): array
-    {
-        return array_filter(
-            array_map(function($address){
-                if(!empty($address['id'])){
-                    return $address;
-                }
-            }, $address)
-        );
-    }
-
-    public function getAddressDeletedItTheFormEdit($addressesData, $address): array
-    {
-        $idsOldAddress = array_map(function($addressBd){
-            if($addressBd['id']){
-                return $addressBd['id'];
-            }
-        }, $addressesData);
-
-        $idsNewAddress = array_filter(
-            array_map(function($address){
-                if(!empty($address['id'])){
-                    return $address['id'];
-                }
-            }, $address)
-        );
-         return array_diff($idsOldAddress, $idsNewAddress);
-    }
-
 }
 
 

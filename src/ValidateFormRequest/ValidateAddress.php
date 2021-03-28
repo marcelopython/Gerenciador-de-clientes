@@ -2,7 +2,6 @@
 
 namespace Kabum\App\ValidateFormRequest;
 
-use Kabum\App\Pre;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
 
 class ValidateAddress implements FormRequestInterface
