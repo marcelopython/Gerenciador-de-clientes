@@ -10,13 +10,23 @@ class ValidateAddress implements FormRequestInterface
 
     private array $fields = ['people_id','cep','address','number','complement','neighborhood','city','state', 'id'];
 
+    private array $sizeFields = ['cep'=>9,'address'=>100,'number'=>10,'complement'=>60,'neighborhood'=>60,'city'=>60,'state'=>30];
+
+    private array $translateFiled = ['cep'=>'Cep','address'=>'Endereço','number'=>'Numero','complement'=>'Complemento',
+        'neighborhood'=>'Bairro','city'=>'Cidade','state'=>'Estado'];
+
     public function validate(array &$request)
     {
         foreach($request as &$address) {
             $this->sanitize($address);
             foreach ($address as $key => $data) {
                 if (empty($data) && !isset($this->notMandatory[$key])) {
-                    throw new \Exception('Por favor preencha os dados obrigatório do endereço', 400);
+                    throw new \Exception('Por favor preencha '.$this->translateFiled[$key].' campo obrigatorio!', 400);
+                }
+                if(!empty($this->sizeFields[$key])){
+                    if(strlen($data) > $this->sizeFields[$key]){
+                        throw new \InvalidArgumentException('Campo '.$this->translateFiled[$key].' excedeu a quantidade de caracteres!', 400);
+                    }
                 }
                 if (array_search($key, $this->fields) === false) {
                     throw new \InvalidArgumentException('Dados inválidos!', 400);

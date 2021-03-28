@@ -8,6 +8,8 @@ class Router extends Request implements RouterInterface
 {
     private array $routes = [];
 
+    private array $methodsForCsrf = ['POST'=>'POST'];
+
     public function asset(string $path): string
     {
         $paths = explode('/', $this->scriptName);
@@ -54,6 +56,13 @@ class Router extends Request implements RouterInterface
         foreach($this->routes as $route){
             $this->getParameters($route, $pathInfoItems, $parameters);
             if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->uri && $this->method === $route['method']){
+                if(!empty($this->methodsForCsrf[$this->method])){
+                    if(empty($route['data_request']['_token']) || Csrf::csrf() !== $route['data_request']['_token']){
+                        $this->redirectTo('http/401', 401);
+                        return ViewHTML::view('http/401');
+                    }
+                    unset($route['data_request']['_token']);
+                }
                 $request = array_merge($this->server, ['data_request' => $route['data_request']]);
                 if($route[1] instanceof \Closure){
                     return $route[1]($request);
@@ -123,8 +132,8 @@ class Router extends Request implements RouterInterface
         $this->type = $type;
     }
 
-    public function redirectTo($uri): void
+    public function redirectTo($uri, $code = 302): void
     {
-        header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri);
+        header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri, false, $code);
     }
 }

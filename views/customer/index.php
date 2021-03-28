@@ -1,5 +1,7 @@
 <?php
 $title = 'Clientes';
+//\Kabum\App\Pre::pre(\Kabum\App\Csrf::csrf());
+//958944b9059130a57410d09db7efc493d061e00de590ae872d4f9b3589bf8c9b
 include __DIR__ . '/../layouts/section/section.php';
 ?>
     <div class="container mt-3">
@@ -10,6 +12,7 @@ include __DIR__ . '/../layouts/section/section.php';
                     <i class="fa fa-user-plus mr-2"></i>Novo Cliente</a>
             </div>
             <div class="card-body">
+                <?php include __DIR__ . '/../component/message.php';?>
                 <table class="table">
                     <caption>Lista de clientes</caption>
                     <thead>
@@ -35,6 +38,7 @@ include __DIR__ . '/../layouts/section/section.php';
                                     <i class="fas fa-pencil-alt	"></i>
                                 </a>
                                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/delete/'.$customer['id']?>" method="post">
+                                    <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
                                     <button class="btn">
                                         <i class="fas fa-trash"></i>
                                     </button>

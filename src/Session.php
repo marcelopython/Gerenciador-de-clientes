@@ -18,7 +18,7 @@ abstract class Session
         return $_SESSION[$key] = $value;
     }
 
-    public static function get(string $key)
+    public final static function get(string $key)
     {
         if(isset($_SESSION[$key])){
             return $_SESSION[$key];
@@ -26,7 +26,7 @@ abstract class Session
         return null;
     }
 
-    public static function remove(string $key)
+    public final static function remove(string $key)
     {
         unset($_SESSION[$key]);
     }

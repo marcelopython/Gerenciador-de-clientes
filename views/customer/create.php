@@ -3,8 +3,6 @@ $title = 'Cadastro de clientes';
 
 include __DIR__ . '/../layouts/section/section.php';
 ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
@@ -12,7 +10,9 @@ include __DIR__ . '/../layouts/section/section.php';
                 <a href="<?=$_SERVER['SCRIPT_NAME'].'/customer'?>" class="btn btn-danger">Voltar</a>
             </div>
             <div class="card-body">
+                <?php include __DIR__ . '/../component/message.php';?>
                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/create'?>" method="post">
+                    <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="name">Nome</label>

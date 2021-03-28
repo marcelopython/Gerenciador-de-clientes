@@ -10,6 +10,7 @@ include __DIR__ . '/../layouts/section/section.php';
             </div>
             <div class="card-body">
                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/update/'.$customer['id']?>" method="post">
+                    <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="name">Nome</label>
