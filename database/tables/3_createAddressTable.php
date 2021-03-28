@@ -25,6 +25,6 @@ if($stmt->execute()){
     echo PHP_EOL;
 }else{
     echo PHP_EOL;
-    echo "Falha ao criar tabela endereço";
+    \Kabum\App\Pre::pre($stmt->errorInfo());
     echo PHP_EOL;
 }

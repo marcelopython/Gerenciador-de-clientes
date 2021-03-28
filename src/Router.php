@@ -4,34 +4,11 @@ namespace Kabum\App;
 
 use Kabum\App\Contracts\RouterInterface;
 
-class Router implements RouterInterface
+class Router extends Request implements RouterInterface
 {
-
     private array $routes = [];
 
-    private string $uri;
-
-    private string  $httpHost;
-
-    private array $server;
-
-    private string $method;
-
-    private string $scriptName;
-
-    private string $protocol;
-
-    public function __construct()
-    {
-        $this->uri = $_SERVER['REQUEST_URI'];
-        $this->httpHost = $_SERVER['HTTP_HOST'];
-        $this->server = $_SERVER;
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->scriptName = $_SERVER['SCRIPT_NAME'];
-        $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-    }
-
-    public function asset(string $path)
+    public function asset(string $path): string
     {
         $paths = explode('/', $this->scriptName);
         $indexFile = array_search('index.php', $paths);
@@ -48,7 +25,6 @@ class Router implements RouterInterface
 
     public function get($url, $controller = [], \Closure $closure = null): Router
     {
-//        Pre::pre($url, false);
         $this->setRoute([['method'=>'GET', $url, !empty($controller) ? $controller : $closure, 'data_request'=>$_GET]]);
         return $this;
     }
@@ -73,36 +49,82 @@ class Router implements RouterInterface
 
     public function run()
     {
+        $pathInfoItems = explode('/', $this->server['PATH_INFO']);
+        $parameters = [];
         foreach($this->routes as $route){
-//            Pre::pre([$route ], false);
-//            continue;
+            $this->getParameters($route, $pathInfoItems, $parameters);
             if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->uri && $this->method === $route['method']){
                 $request = array_merge($this->server, ['data_request' => $route['data_request']]);
                 if($route[1] instanceof \Closure){
                     return $route[1]($request);
                 }
-                $controller = $route[1][0];
-                $method = $route[1][1];
-                if(!isset($route['middleware'])){
-                    return (new $controller())->$method($request);
-                }else{
-                    foreach($route['middleware'] as $middleware){
-                        $request = (new $middleware())->middleware($request, function($request){return $request;});
-                        if(!$request){
-                            return $this->redirectTo('login');
-                        }
-                    }
-                    return (new $controller())->$method($request);
-                }
+                return $this->getController($route, $request, $parameters);
             }
         }
-        Pre::pre([]);
         return ViewHTML::view('http/404');
     }
 
-    public function redirectTo($uri)
+    public function getController(array $route, array $request, array $parameters)
     {
-        return header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri);
+        $controller = $route[1][0];
+        $method = $route[1][1];
+        if(!isset($route['middleware'])){
+            return (new $controller())->$method($request, ...$parameters);
+        }else{
+            foreach($route['middleware'] as $middleware){
+                $request = (new $middleware())->middleware($request, function($request){return $request;});
+                if(!$request){
+                    $this->redirectTo('login');
+                }
+            }
+            return (new $controller())->$method($request, ...$parameters);
+        }
     }
 
+    public function getParameters(array &$route, array $pathInfoItems, array &$parameters)
+    {
+        if (strpos($route[0], '[$')) {
+            $pathWithParameters = explode('/', $route[0]);
+            foreach($pathInfoItems as $key => $path){
+                if (strpos($pathWithParameters[$key], '[$') !== false) {
+                    continue;
+                }
+                if($pathWithParameters[$key] !== $path){
+                    return;
+                }
+            }
+            foreach ($pathWithParameters as $key => $value) {
+                if (array_search($value, $pathInfoItems) === false) {
+                    $this->validateTypeParameters($pathInfoItems[$key]);
+                    $parameters[] = $pathInfoItems[$key];
+                }
+                $pathWithParameters[$key] = $pathInfoItems[$key];
+            }
+            $route[0] = join('/', $pathWithParameters);
+        }
+
+    }
+
+    public function validateTypeParameters($param)
+    {
+        foreach ($this->type as $type) {
+            switch($type) {
+                case 'int':
+                    if(!is_numeric($param)){
+                        return ViewHTML::view('http/404');
+                    }
+                    break;
+            }
+        }
+    }
+
+    public function type(array $type = [])
+    {
+        $this->type = $type;
+    }
+
+    public function redirectTo($uri): void
+    {
+        header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri);
+    }
 }

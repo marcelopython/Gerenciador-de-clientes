@@ -3,25 +3,43 @@
 class Address{
 
     constructor() {
-        this.indexFormAdrress = 0;
+        this.indexFormAdrress = null;
+        this.setLastNumberItemForm();
         this.notObligatory = {
             complement:'complement'
         }
         this.handleClickAddHtmlAddress();
     }
 
+    setLastNumberItemForm(){
+        let totalItemAddress = $('#total-item-address')
+        if(totalItemAddress){
+            totalItemAddress = Number.parseInt(totalItemAddress.val());
+            for(let i = 0; i < totalItemAddress; i++){
+                this.handleClickRemoveAddress(i)
+            }
+        }else{
+            totalItemAddress = 0;
+        }
+        this.indexFormAdrress = totalItemAddress;
+    }
+
     handleClickAddHtmlAddress(){
         $('#btn-new-address').click((event)=>{
             if(this.validateAddNewFormAddress()) {
                 $('#container-address').append(this.getLastHtmlAddress())
-                $(`#btn-remove-address-${this.indexFormAdrress}`).click(event=>{
-                    let target = event.target;
-                    if(target.nodeName === 'I'){
-                        target = target.parentNode;
-                    }
-                    target.parentElement.offsetParent.remove();
-                })
+                this.handleClickRemoveAddress(this.indexFormAdrress);
             }
+        })
+    }
+
+    handleClickRemoveAddress(index){
+        $(`#btn-remove-address-${index}`).click(event=>{
+            let target = event.target;
+            if(target.nodeName === 'I'){
+                target = target.parentNode;
+            }
+            target.parentElement.offsetParent.remove();
         })
     }
 

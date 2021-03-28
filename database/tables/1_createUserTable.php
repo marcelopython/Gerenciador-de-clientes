@@ -18,6 +18,6 @@ if($stmt->execute()){
     echo PHP_EOL;
 }else{
     echo PHP_EOL;
-    echo "Falha ao criar tabela usuário";
+    \Kabum\App\Pre::pre($stmt->errorInfo());
     echo PHP_EOL;
 }

@@ -1,6 +1,5 @@
 <?php
-$title = 'Cadastro de clientes';
-
+$title = 'Editar cliente';
 include __DIR__ . '/../layouts/section/section.php';
 ?>
     <div class="container mt-3">
@@ -10,29 +9,32 @@ include __DIR__ . '/../layouts/section/section.php';
                 <a href="<?=$_SERVER['SCRIPT_NAME'].'/customer'?>" class="btn btn-danger">Voltar</a>
             </div>
             <div class="card-body">
-                <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/create'?>" method="post">
+                <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/update/'.$customer['id']?>" method="post">
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="name">Nome</label>
                             <input type="text" class="form-control" placeholder="Nome" name="name" id="name" required
-                                   autocomplete="no" maxlength="60">
+                                   autocomplete="no" maxlength="60" value="<?=$customer['name']?>">
                         </div>
                         <div class="col-md-2">
                             <label for="cpf">CPF</label>
-                            <input type="number" class="form-control" name="cpf" id="cpf" required autocomplete="no" maxlength="11">
+                            <input type="number" class="form-control" name="cpf" id="cpf" required autocomplete="no"
+                                   value="<?=$customer['cpf']?>" maxlength="11">
                         </div>
                         <div class="col-md-2">
                             <label for="rg">RG</label>
-                            <input type="number" class="form-control" name="rg" id="rg" required autocomplete="no" maxlength="7">
+                            <input type="number" class="form-control" name="rg" id="rg" required autocomplete="no"
+                                   value="<?=$customer['rg']?>" maxlength="7">
                         </div>
                         <div class="col-md-2">
                             <label for="birth_date">Data Nascimento</label>
-                            <input type="date" class="form-control" name="birth_date" id="birth_date" required autocomplete="no">
+                            <input type="date" class="form-control" name="birth_date" id="birth_date"
+                                   value="<?=$customer['birth_date']?>" required autocomplete="no">
                         </div>
                         <div class="col-md-2">
                             <label for="phone">Telefone</label>
                             <input type="number" class="form-control" name="phone" id="phone" required autocomplete="no"
-                             maxlength="11">
+                             maxlength="11" value="<?=$customer['phone']?>">
                         </div>
                         <div class="col-12">
                             <hr>
@@ -42,9 +44,12 @@ include __DIR__ . '/../layouts/section/section.php';
                             </button>
                         </div>
                         <div id="container-address">
+                            <input type="hidden" value="<?=count($addresses)?>" id="total-item-address">
                             <?php
-                                $index = 0;
-                                include __DIR__ . '/../customer/address/form.php';
+                                foreach($addresses as $key => $address) {
+                                    $index = $key;
+                                    include __DIR__ . '/../customer/address/edit.php';
+                                }
                             ?>
                         </div>
                     </div>
@@ -56,5 +61,6 @@ include __DIR__ . '/../layouts/section/section.php';
         </div>
     </div>
     <input type="hidden" id="base-url" value="<?=  $_SERVER['SCRIPT_NAME'] ?>">
-    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/create.js') ?>"></script>
+    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/form.js') ?>"></script>
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>
+

@@ -58,5 +58,5 @@ include __DIR__ . '/../layouts/section/section.php';
         </div>
     </div>
     <input type="hidden" id="base-url" value="<?=  $_SERVER['SCRIPT_NAME'] ?>">
-    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/create.js') ?>"></script>
+    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/form.js') ?>"></script>
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>

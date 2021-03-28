@@ -1,5 +1,6 @@
 <?php
 use \Kabum\App\Router;
+use \Kabum\App\Controller\Customer\CustomerController;
 
 $route = new Router();
 $GLOBALS['router']  = $route;
@@ -19,16 +20,15 @@ $route->middleware([\Kabum\App\Middleware\AuthMiddleware::class], function() use
     $route->get('/dashboard', [\Kabum\App\Controller\Dashboard\DashboardController::class, 'index']);
 
     /*Rotas de clientes*/
-    $route->get('/customer', [\Kabum\App\Controller\Customer\CustomerController::class, 'index']);
-    $route->get('/customer/create', [\Kabum\App\Controller\Customer\CustomerController::class, 'form']);
-    $route->post('/customer/create', [\Kabum\App\Controller\Customer\CustomerController::class, 'create']);
+    $route->get('/customer', [CustomerController::class, 'index']);
+    $route->get('/customer/create', [CustomerController::class, 'form']);
+    $route->post('/customer/create', [CustomerController::class, 'create']);
+    $route->get('/customer/edit/[$id]', [CustomerController::class, 'edit'])->type(['int']);
+    $route->post('/customer/update/[$id]', [CustomerController::class, 'update'])->type(['int']);
 
-    $route->get('/customer/edit/[int:$id]', [\Kabum\App\Controller\Customer\CustomerController::class, 'edit']);
-
-    /*Rotas de endereço*/
-//    $route->get('/form-address/<int: index>', [\Kabum\App\Controller\Address\AddressController::class, 'formAdd']);
-
-    return ['/dashboard', '/customer', '/logout', '/customer/create'];
+    return [
+        '/dashboard', '/customer', '/logout', '/customer/create', '/customer/edit/[$id]', '/customer/update/[$id]'
+    ];
 });
 
 $route->run();

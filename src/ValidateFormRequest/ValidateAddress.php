@@ -2,19 +2,21 @@
 
 namespace Kabum\App\ValidateFormRequest;
 
+use Kabum\App\Pre;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
 
 class ValidateAddress implements FormRequestInterface
 {
+    private array $notMandatory = ['complement'=>'', 'id'=>''];
 
-    private array $fields = ['people_id','cep','address','number','complement','neighborhood','city','state'];
+    private array $fields = ['people_id','cep','address','number','complement','neighborhood','city','state', 'id'];
 
     public function validate(array &$request)
     {
         foreach($request as &$address) {
             $this->sanitize($address);
             foreach ($address as $key => $data) {
-                if (empty($data)) {
+                if (empty($data) && !isset($this->notMandatory[$key])) {
                     throw new \Exception('Por favor preencha os dados obrigatório do endereço', 400);
                 }
                 if (array_search($key, $this->fields) === false) {

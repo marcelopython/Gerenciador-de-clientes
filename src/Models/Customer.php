@@ -20,7 +20,7 @@ class Customer extends Model implements CustomerInterface
 
     public function address()
     {
-        return $this->hasMany(Address::class, 'pessoa_id', 'id');
+        return $this->hasMany(Address::class, 'people_id', 'id');
     }
 
 
