@@ -2,7 +2,9 @@
 
 namespace Kabum\App;
 
-
+/**
+ * Classe para gerenciamento de sessão
+ */
 abstract class Session
 {
     private function __construct(){}

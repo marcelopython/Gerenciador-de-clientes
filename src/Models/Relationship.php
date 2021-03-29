@@ -14,7 +14,7 @@ trait Relationship
 
     public function hasMany(string $class, string $foreignKey, string $primaryKey): hasManyInterface
     {
-         return (new $class())->join($foreignKey, $primaryKey, $this->lastInsertId);
+         return (new $class())->setRelation($foreignKey, $primaryKey, $this->lastInsertId);
     }
 
     private final function addIdRelationship(array &$data): void

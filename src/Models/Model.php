@@ -3,7 +3,7 @@
 namespace Kabum\App\Models;
 use Kabum\App\Models\ContractModel\hasManyInterface;
 use Kabum\App\Models\ContractModel\ModelInterface;
-use Kabum\App\Pre;
+use Kabum\App\Router;
 
 class Model extends DB implements ModelInterface, hasManyInterface
 {
@@ -35,7 +35,11 @@ class Model extends DB implements ModelInterface, hasManyInterface
     public function find(int $id): Model
     {
         $this->where($this->key, $id, '=');
-        $this->data = $this->first();
+        $data = $this->first();
+        if(!$data){
+            return (new Router())->redirectTo('http/404');
+        }
+        $this->data = $data;
         $this->lastInsertId = $id;
         return $this;
     }
@@ -106,7 +110,7 @@ class Model extends DB implements ModelInterface, hasManyInterface
         $this->deleteIn($ids);
     }
 
-    public function paginate($offset = 0, $limit = 10)
+    public function paginate(int $offset = 0, int $limit = 10): array
     {
         if($offset <= 1){
             $offset = 0;
@@ -148,7 +152,7 @@ class Model extends DB implements ModelInterface, hasManyInterface
         return $this->where($this->foreignKey, $this->idRelationshp, '=')->get();
     }
 
-    public function join(string $foreignKey, string $primaryKey, int $idRelationshp)
+    public function setRelation(string $foreignKey, string $primaryKey, int $idRelationshp)
     {
         $this->foreignKey = $foreignKey;
         $this->primaryKey = $primaryKey;

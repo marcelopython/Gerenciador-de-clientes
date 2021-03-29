@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: msr
- * Date: 25/03/21
- * Time: 20:17
- */
 
 namespace Kabum\App\Middleware;
 
@@ -12,6 +6,10 @@ namespace Kabum\App\Middleware;
 use Kabum\App\Router;
 use Kabum\App\Session;
 
+/**
+ * verificação se o usuario esta logado
+ * Usado em rotas que necessita de autenticação
+ */
 class AuthMiddleware
 {
 

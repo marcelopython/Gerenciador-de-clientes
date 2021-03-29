@@ -8,17 +8,20 @@ use Kabum\App\Pre;
 
 class DB extends DBAbstract
 {
-
+    /**Tabela do banco de dados*/
     protected string $table = '';
-
+    
+    /**Campos que sera preenchidos pelo formulário*/
     protected array $fields = [];
 
     protected \PDOStatement $stmt;
 
     protected int $lastInsertId;
 
+    /**Identificado da colunas do tabela que e primary key*/
     protected string $key = 'id';
 
+    /**Simbolos que sera informado na query*/
     protected string $paramnsSymbol;
 
     protected \PDO $connection;

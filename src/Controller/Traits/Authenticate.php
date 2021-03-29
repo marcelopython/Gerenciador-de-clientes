@@ -12,11 +12,15 @@ trait Authenticate
 
     private $redirectNotAuthenticate = 'login';
 
+    /*** Faz a verficação do rash retornado do cando de dados*/
     public function checkPassword($password, $hash): bool
     {
         return password_verify($password, $hash);
     }
 
+    /**
+     * Verifica se o usuário existe no banco de dados caso sim seta o usuário na sessão
+     */
     public function check(array $data): bool
     {
         $data = $this->sanitize($data);
@@ -42,6 +46,7 @@ trait Authenticate
         ]));
     }
 
+    /**Finaliza a sessão do usuario*/
     public function finishSession()
     {
         Session::remove('user');

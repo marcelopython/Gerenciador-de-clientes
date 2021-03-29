@@ -8,7 +8,7 @@ use Kabum\App\Models\Model;
 
 interface ModelInterface
 {
-    public function join(string $foreignKey, string $primaryKey, int $idRelationshp);
+    public function setRelation(string $foreignKey, string $primaryKey, int $idRelationshp);
 
     public function create(array $data): ModelInterface;
 

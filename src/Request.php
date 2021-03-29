@@ -3,7 +3,9 @@
 
 namespace Kabum\App;
 
-
+/**
+ * Class de Request
+ */
 abstract class Request
 {
     protected string $uri;

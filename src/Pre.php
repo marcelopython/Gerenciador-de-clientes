@@ -2,7 +2,9 @@
 
 namespace Kabum\App;
 
-
+/**
+ Class para debug
+ */
 class Pre
 {
 
