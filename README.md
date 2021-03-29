@@ -4,6 +4,8 @@
 
 **Clonar o projeto**
 
+**Apos clonar o projeto executa o comando: git checkout master**
+
 **Instalar o composer para gerenciamento de dependência**
 * [Site do composer para download](#Site do composer para download)
     * [Vesão  1.10.1](#Vesão  1.10.1)
