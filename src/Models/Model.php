@@ -117,7 +117,7 @@ class Model extends DB implements ModelInterface, hasManyInterface
         }else{
             $offset =  ($limit*$offset)-$limit;
         }
-        $this->select(' LIMIT '.$limit.' OFFSET '.$offset);
+        $this->select(' ORDER BY '.$this->key.' DESC  LIMIT '.$limit.' OFFSET '.$offset);
         $items = $this->get();
         $this->select();
         $totalItem = $this->count();
