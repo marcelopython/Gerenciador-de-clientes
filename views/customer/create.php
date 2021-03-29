@@ -38,8 +38,8 @@ include __DIR__ . '/../layouts/section/section.php';
                         </div>
                         <div class="col-12">
                             <hr>
-                            <h6>Endereço</h6>
-                            <button class="float-right btn btn-warning" type="button" id="btn-new-address">
+                            <h6 class="d-inline-block">Endereço</h6>
+                            <button class="float-right btn btn-warning d-inline-block" type="button" id="btn-new-address">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>

@@ -4,7 +4,6 @@ namespace Kabum\App\Controller\Customer;
 use Kabum\App\Business\AddressBo;
 use Kabum\App\Models\ContractModel\CustomerInterface;
 use Kabum\App\Models\Customer;
-use Kabum\App\Pre;
 use Kabum\App\Router;
 use Kabum\App\Session;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
@@ -44,6 +43,7 @@ class CustomerController
     public function form()
     {
         $states = AddressBo::$states;
+        ksort($states);
         return ViewHTML::view('customer/create', ['states'=>$states]);
     }
 
@@ -84,6 +84,7 @@ class CustomerController
         $dataCustomer = $customer->data;
         $addresses = $customer->address()->getDataRelation();
         $states = AddressBo::$states;
+        ksort($states);
         return ViewHTML::view('customer/edit', ['customer'=>$dataCustomer, 'addresses'=>$addresses, 'states'=>$states]);
     }
 
