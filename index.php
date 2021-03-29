@@ -1,3 +1,3 @@
 <?php
-
-header('Location: http://localhost/kabum/public/index.php/login');
+$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+header('Location: '.$protocol.$_SERVER['HTTP_HOST'].'/public');
