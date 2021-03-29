@@ -14,27 +14,27 @@ include __DIR__ . '/../layouts/section/section.php';
                     <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
                     <div class="form-row">
                         <div class="col-md-4">
-                            <label for="name">Nome</label>
+                            <label for="name">Nome<span style="color: red">*</span></label>
                             <input type="text" class="form-control" placeholder="Nome" name="name" id="name" required
                                    autocomplete="no" maxlength="60" value="<?=$customer['name']?>">
                         </div>
                         <div class="col-md-2">
-                            <label for="cpf">CPF</label>
+                            <label for="cpf">CPF<span style="color: red">*</span></label>
                             <input type="number" class="form-control" name="cpf" id="cpf" required autocomplete="no"
                                    value="<?=$customer['cpf']?>" maxlength="11">
                         </div>
                         <div class="col-md-2">
-                            <label for="rg">RG</label>
+                            <label for="rg">RG<span style="color: red">*</span></label>
                             <input type="number" class="form-control" name="rg" id="rg" required autocomplete="no"
                                    value="<?=$customer['rg']?>">
                         </div>
                         <div class="col-md-2">
-                            <label for="birth_date">Data Nascimento</label>
+                            <label for="birth_date">Data Nascimento<span style="color: red">*</span></label>
                             <input type="date" class="form-control" name="birth_date" id="birth_date"
                                    value="<?=$customer['birth_date']?>" required autocomplete="no">
                         </div>
                         <div class="col-md-2">
-                            <label for="phone">Telefone</label>
+                            <label for="phone">Telefone<span style="color: red">*</span></label>
                             <input type="number" class="form-control" name="phone" id="phone" required autocomplete="no"
                              maxlength="11" value="<?=$customer['phone']?>">
                         </div>
