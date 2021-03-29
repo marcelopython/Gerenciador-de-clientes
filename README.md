@@ -12,6 +12,13 @@
     * [https://getcomposer.org/download/](#https://getcomposer.org/download/)
 
 
+
+### Comando para Instalação de dependência do projeto
+
+
+**composer install**
+
+
 **Php**
 * [Versão](#versão)
     * [>= 7.4.3](#>=7.4.3) 
@@ -37,11 +44,6 @@
 ### Comando para inserir o usuário default
 
 **php database/insert/createAdminUser.php**
-
-
-##  Comando para Instalação de dependência do projeto
-
-**composer install**
 
 
 ## Inicialização do projeto pelo servido php
