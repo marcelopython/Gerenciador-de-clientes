@@ -6,16 +6,22 @@
 
 **Apos clonar o projeto executa o comando: git checkout master**
 
-
 **Instalar o composer para gerenciamento de dependência**
 * [Site do composer para download](#Site do composer para download)
     * [Vesão  1.10.1](#Vesão  1.10.1)
     * [https://getcomposer.org/download/](#https://getcomposer.org/download/)
 
 
+
+### Comando para Instalação de dependência do projeto
+
+
+**composer install**
+
+
 **Php**
 * [Versão](#versão)
-    * [>= 7.4.3](#>=7.4.3)
+    * [>= 7.4.3](#>=7.4.3) 
 
 **Banco de dados Mysql**
 * [Versão](#Versão)
@@ -38,11 +44,6 @@
 ### Comando para inserir o usuário default
 
 **php database/insert/createAdminUser.php**
-
-
-##  Comando para Instalação de dependência do projeto
-
-**composer install**
 
 
 ## Inicialização do projeto pelo servido php
