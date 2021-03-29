@@ -4,6 +4,7 @@ namespace Kabum\App\Controller\Customer;
 use Kabum\App\Business\AddressBo;
 use Kabum\App\Models\ContractModel\CustomerInterface;
 use Kabum\App\Models\Customer;
+use Kabum\App\Pre;
 use Kabum\App\Router;
 use Kabum\App\Session;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
@@ -74,12 +75,6 @@ class CustomerController
             }
             (new Router())->redirectTo('customer/create');
             $peopleDB->rollback();
-        }catch(\InvalidArgumentException $e){
-            if($e->getCode() === 400) {
-                Session::session('warning', $e->getMessage());
-            }
-            $peopleDB->rollback();
-            (new Router())->redirectTo('customer/create');
         }
     }
 
@@ -115,13 +110,6 @@ class CustomerController
                 Session::session('warning', $e->getMessage());
             }else{
                 Session::session('error', 'Ocorreu um erro inesperado');
-            }
-            $customerBd->rollback();
-            (new Router())->redirectTo('customer/edit/'.$id);
-
-        }catch(\InvalidArgumentException $e){
-            if($e->getCode() === 400) {
-                Session::session('warning', $e->getMessage());
             }
             $customerBd->rollback();
             (new Router())->redirectTo('customer/edit/'.$id);

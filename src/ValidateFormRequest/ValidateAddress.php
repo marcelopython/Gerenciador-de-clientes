@@ -21,7 +21,7 @@ class ValidateAddress implements FormRequestInterface
             $this->sanitize($address);
             foreach ($address as $key => $data) {
                 if (empty($data) && !isset($this->notMandatory[$key])) {
-                    throw new \Exception('Por favor preencha '.$this->translateFiled[$key].' campo obrigatorio!', 400);
+                    throw new \InvalidArgumentException('Por favor preencha '.$this->translateFiled[$key].' campo obrigatorio!', 400);
                 }
                 if(!empty($this->sizeFields[$key])){
                     if(strlen($data) > $this->sizeFields[$key]){

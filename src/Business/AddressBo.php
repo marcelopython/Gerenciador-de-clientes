@@ -2,7 +2,9 @@
 
 namespace Kabum\App\Business;
 
+use http\Exception\InvalidArgumentException;
 use Kabum\App\Models\ContractModel\CustomerInterface;
+use Kabum\App\Pre;
 use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
 use Kabum\App\ValidateFormRequest\ValidateAddress;
 
@@ -38,6 +40,9 @@ class AddressBo
             $oldAddress = $this->getOldAddressInformEdit($address);
             $addressesData->updateMany($oldAddress);
         }catch(\Exception $e){
+            if($e->getCode() === 400){
+                throw new \Exception($e->getMessage(), $e->getCode());
+            }
             throw new \Exception('Falha ao atualizar endereço');
         }
     }
