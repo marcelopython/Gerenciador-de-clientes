@@ -12,7 +12,7 @@ class Connection implements ConnectionInterface{
         if(!isset(self::$pdo)){
             try {
                 self::$pdo = new \PDO(
-                    'mysql:host='.HOST.';dbname='.DBNAME.';charset='.CHARSET.';',USER,PASSWORD
+                    'mysql:host='.HOST.';port='.PORT.';dbname='.DBNAME.';charset='.CHARSET.';',USER,PASSWORD
                 );
             }catch(\PDOException $e){
                 echo 'Falha na conexão';

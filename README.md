@@ -50,6 +50,12 @@
 
 **localhost/[caminho_onde_esta_o_projeto]/public**
 
+## Usuário default
+
+**Email = admin@admin.com.br**
+
+**Password = admin**
+
 
 
 
