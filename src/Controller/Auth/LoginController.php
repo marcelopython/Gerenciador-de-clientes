@@ -1,15 +1,13 @@
 <?php
 
-namespace Kabum\App\Controller\Auth;
+namespace App\Controller\Auth;
 
 
-use Kabum\App\Controller\Traits\Authenticate;
-use Kabum\App\Models\User;
-use Kabum\App\Models\ContractModel\UserInterface;
-use Kabum\App\Pre;
-use Kabum\App\Router;
-use Kabum\App\Session;
-use Kabum\App\ViewHTML;
+use App\Models\User;
+use App\Models\ContractModel\UserInterface;
+use App\App\Router;
+use App\App\Session;
+use App\App\ViewHTML;
 
 class LoginController
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Kabum\App\Controller\Dashboard;
+namespace App\Controller\Dashboard;
 
 
-use Kabum\App\Session;
-use Kabum\App\ViewHTML;
+use App\App\Session;
+use App\App\ViewHTML;
 
 class DashboardController
 {

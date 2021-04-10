@@ -1,10 +1,8 @@
 <?php
 
-namespace Kabum\App\ValidateFormRequest;
+namespace App\ValidateFormRequest;
 
-use Kabum\App\Pre;
-use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
-use MongoDB\BSON\Persistable;
+use App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
 
 class ValidateCustomer implements FormRequestInterface
 {

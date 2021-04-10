@@ -1,15 +1,15 @@
 <?php
-namespace Kabum\App\Controller\Customer;
+namespace App\Controller\Customer;
 
-use Kabum\App\Business\AddressBo;
-use Kabum\App\Models\ContractModel\CustomerInterface;
-use Kabum\App\Models\Customer;
-use Kabum\App\Router;
-use Kabum\App\Session;
-use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
-use Kabum\App\ValidateFormRequest\ValidateAddress;
-use Kabum\App\ValidateFormRequest\ValidateCustomer;
-use Kabum\App\ViewHTML;
+use App\Business\AddressBo;
+use App\Models\ContractModel\CustomerInterface;
+use App\Models\Customer;
+use App\App\Router;
+use App\App\Session;
+use App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
+use App\ValidateFormRequest\ValidateAddress;
+use App\ValidateFormRequest\ValidateCustomer;
+use App\App\ViewHTML;
 
 class CustomerController
 {

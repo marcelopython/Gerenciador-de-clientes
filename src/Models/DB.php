@@ -1,10 +1,9 @@
 <?php
 
-namespace Kabum\App\Models;
+namespace App\Models;
 
 use DB\Database\Connection;
-use Kabum\App\Models\ContractModel\DBAbstract;
-use Kabum\App\Pre;
+use App\Models\ContractModel\DBAbstract;
 
 class DB extends DBAbstract
 {

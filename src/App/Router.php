@@ -1,15 +1,13 @@
 <?php
 
-namespace Kabum\App;
+namespace App\App;
 
-use Kabum\App\Contracts\RouterInterface;
 
 /**
  * Class Router
- * @package Kabum\App
  * Classe responsável por chamar o controller da requisiçao
  */
-class Router extends Request implements RouterInterface
+class Router extends Request
 {
     private array $routes = [];
 

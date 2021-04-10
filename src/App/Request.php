@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Kabum\App;
+namespace App\App;
 
 /**
  * Class de Request

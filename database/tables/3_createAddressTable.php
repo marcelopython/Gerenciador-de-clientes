@@ -25,6 +25,6 @@ if($stmt->execute()){
     echo PHP_EOL;
 }else{
     echo PHP_EOL;
-    \Kabum\App\Pre::pre($stmt->errorInfo());
+    App\App\Pre::pre($stmt->errorInfo());
     echo PHP_EOL;
 }

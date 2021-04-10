@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Kabum\App\ValidateFormRequest\ContractFormRequest;
+namespace App\ValidateFormRequest\ContractFormRequest;
 
 
 interface FormRequestInterface

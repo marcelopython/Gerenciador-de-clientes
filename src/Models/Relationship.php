@@ -1,8 +1,8 @@
 <?php
 
-namespace Kabum\App\Models;
+namespace App\Models;
 
-use Kabum\App\Models\ContractModel\hasManyInterface;
+use App\Models\ContractModel\hasManyInterface;
 
 trait Relationship
 {

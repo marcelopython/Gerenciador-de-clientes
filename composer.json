@@ -9,7 +9,7 @@
     "require": {},
     "autoload":{
         "psr-4":{
-            "Kabum\\App\\":"src/",
+            "App\\":"src/",
             "DB\\Database\\":"database/"
         }
     }

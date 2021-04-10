@@ -1,6 +1,6 @@
 <?php
 
-namespace Kabum\App\Models;
+namespace App\Models;
 
 
 class Address extends Model

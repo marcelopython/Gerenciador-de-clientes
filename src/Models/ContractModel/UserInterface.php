@@ -1,6 +1,6 @@
 <?php
 
-namespace Kabum\App\Models\ContractModel;
+namespace App\Models\ContractModel;
 
 
 interface UserInterface

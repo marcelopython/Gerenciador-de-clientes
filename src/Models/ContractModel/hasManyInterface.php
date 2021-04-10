@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Kabum\App\Models\ContractModel;
+namespace App\Models\ContractModel;
 
 
-use Kabum\App\Models\Model;
+use App\Models\Model;
 
 interface hasManyInterface
 {

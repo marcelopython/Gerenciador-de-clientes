@@ -1,9 +1,9 @@
 <?php
 
-namespace Kabum\App\Models;
+namespace App\Models;
 
 
-use Kabum\App\Models\ContractModel\CustomerInterface;
+use App\Models\ContractModel\CustomerInterface;
 
 class Customer extends Model implements CustomerInterface
 {

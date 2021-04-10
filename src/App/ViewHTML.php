@@ -1,6 +1,6 @@
 <?php
 
-namespace Kabum\App;
+namespace App\App;
 
 /**
  * classe para retornar o html
@@ -16,7 +16,8 @@ class ViewHTML
             /*** Extrai variaveis apartir de array*/
             extract($variables, EXTR_SKIP);
         }
-        return include __DIR__ . '/../views/'.$path.'.php';
+//        Pre::pre(__DIR__ . '/../../views/' .$path.'.php');
+        return include __DIR__ . '/../../views/' .$path.'.php';
     }
 
 }

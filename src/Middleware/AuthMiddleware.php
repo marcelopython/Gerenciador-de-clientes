@@ -1,10 +1,10 @@
 <?php
 
-namespace Kabum\App\Middleware;
+namespace App\Middleware;
 
 
-use Kabum\App\Router;
-use Kabum\App\Session;
+use App\App\Router;
+use App\App\Session;
 
 /**
  * verificação se o usuario esta logado

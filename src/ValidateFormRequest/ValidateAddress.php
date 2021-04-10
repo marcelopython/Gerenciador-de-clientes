@@ -1,8 +1,8 @@
 <?php
 
-namespace Kabum\App\ValidateFormRequest;
+namespace App\ValidateFormRequest;
 
-use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
+use App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
 
 class ValidateAddress implements FormRequestInterface
 {

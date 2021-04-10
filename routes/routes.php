@@ -5,9 +5,10 @@
  * Configuração de rotas
  * */
 
-use \Kabum\App\Router;
-use \Kabum\App\Controller\Customer\CustomerController;
-use \Kabum\App\Controller\Auth\LoginController;
+use App\App\Router;
+use App\Controller\Customer\CustomerController;
+use App\Controller\Auth\LoginController;
+
 $route = new Router();
 
 /**
@@ -21,10 +22,10 @@ $route->post('/login', [LoginController::class, 'login']);
 /***
  * Middleware de verificação da autenticação do usuario
  */
-$route->middleware([\Kabum\App\Middleware\AuthMiddleware::class], function() use ($route){
+$route->middleware([App\Middleware\AuthMiddleware::class], function() use ($route){
 
-    $route->get('/dashboard', [\Kabum\App\Controller\Dashboard\DashboardController::class, 'index']);
-    $route->post('/logout', [\Kabum\App\Controller\Auth\LogoutController::class, 'logout']);
+    $route->get('/dashboard', [App\Controller\Dashboard\DashboardController::class, 'index']);
+    $route->post('/logout', [App\Controller\Auth\LogoutController::class, 'logout']);
 
     /*Rotas de clientes*/
     $route->get('/customer', [CustomerController::class, 'index']);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kabum\App;
+namespace App\App;
 
 /**
  Class para debug

@@ -11,7 +11,7 @@ include __DIR__ . '/../layouts/section/section.php';
             <div class="card-body">
                 <?php include __DIR__ . '/../component/message.php';?>
                 <form action="<?=$_SERVER['SCRIPT_NAME'].'/customer/update/'.$customer['id']?>" method="post">
-                    <input type="hidden" value="<?=\Kabum\App\Csrf::csrf()?>" name="_token">
+                    <input type="hidden" value="<?=App\App\Csrf::csrf()?>" name="_token">
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="name">Nome<span style="color: red">*</span></label>
@@ -63,6 +63,6 @@ include __DIR__ . '/../layouts/section/section.php';
         </div>
     </div>
     <input type="hidden" id="base-url" value="<?=  $_SERVER['SCRIPT_NAME'] ?>">
-    <script src="<?=  (new \Kabum\App\Router())->asset('/js/src/customer/form.js') ?>"></script>
+    <script src="<?=  (new \App\App\Router())->asset('/js/src/customer/form.js') ?>"></script>
 <?php include __DIR__ . '/../layouts/section/endSection.php';?>
 

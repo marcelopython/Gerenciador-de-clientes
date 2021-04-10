@@ -1,9 +1,9 @@
 <?php
 
-namespace Kabum\App\Models;
-use Kabum\App\Models\ContractModel\hasManyInterface;
-use Kabum\App\Models\ContractModel\ModelInterface;
-use Kabum\App\Router;
+namespace App\Models;
+use App\Models\ContractModel\hasManyInterface;
+use App\Models\ContractModel\ModelInterface;
+use App\App\Router;
 
 class Model extends DB implements ModelInterface, hasManyInterface
 {

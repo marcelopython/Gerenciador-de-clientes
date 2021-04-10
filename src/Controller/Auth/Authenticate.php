@@ -1,11 +1,11 @@
 <?php
 
-namespace Kabum\App\Controller\Traits;
+namespace App\Controller\Auth;
 
 
-use Kabum\App\Models\User;
-use Kabum\App\Router;
-use Kabum\App\Session;
+use App\Models\User;
+use App\App\Router;
+use App\App\Session;
 
 trait Authenticate
 {

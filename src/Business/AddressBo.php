@@ -1,12 +1,12 @@
 <?php
 
-namespace Kabum\App\Business;
+namespace App\Business;
 
 use http\Exception\InvalidArgumentException;
-use Kabum\App\Models\ContractModel\CustomerInterface;
-use Kabum\App\Pre;
-use Kabum\App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
-use Kabum\App\ValidateFormRequest\ValidateAddress;
+use App\Models\ContractModel\CustomerInterface;
+use App\Pre;
+use App\ValidateFormRequest\ContractFormRequest\FormRequestInterface;
+use App\ValidateFormRequest\ValidateAddress;
 
 class AddressBo
 {

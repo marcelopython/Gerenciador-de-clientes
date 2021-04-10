@@ -1,11 +1,10 @@
 <?php
 
 
-namespace Kabum\App;
+namespace App\App;
 
 /**
  * Class Csrf
- * @package Kabum\App
  * Prevenção contra ataques CSRF
  * Por cada requisição e criado um novo rash para compara com o que foi enviado pelo formulario
  */
