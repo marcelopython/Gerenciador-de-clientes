@@ -18,7 +18,6 @@ class Connection
                     getenv('DB_USER'),getenv('DB_PASSWORD')
                 );
             }catch(\PDOException $e){
-                Pre::pre($e->getMessage());
                 echo 'Falha na conexão';
             }
         }
