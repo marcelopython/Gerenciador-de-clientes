@@ -6,32 +6,75 @@ namespace App\App;
 /**
  * Class de Request
  */
-abstract class Request
+class Request
 {
-    protected string $uri;
+  /**Metodo http da requisição*/
+  private string $httpMethod;
 
-    protected string  $httpHost;
+  /**Uri da pagina*/
+  private string $uri;
 
-    protected array $server;
+  /**Parametros da url ($_GET)*/
+  private array $queryParams = [];
 
-    protected string $method;
+  /**Variaveis recebidas no POST da página ($_POST)*/
+  private array $postVars = [];
 
-    protected string $scriptName;
+  /**Cabeçalho da requisição*/
+  private array $headers = [];
 
-    protected string $requestSelf;
+  /**Instanceia de Router*/
+  private $router;
 
-    protected string $protocol;
+  public function __construct($router)
+  {
+      $this->router = $router;
+      $this->queryParams = $_GET ?? [];
+      $this->postVars = $_POST ?? [];
+      $this->headers = getallheaders();
+      $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? '';
+      $this->setUri();
+  }
 
-    protected array $type = [];
+  /**Método responsável por definir a uri*/
+  private function setUri()
+  {
+      //Uri completa
+      $this->uri = $_SERVER['REQUEST_URI'] ?? '';
 
-    public function __construct()
-    {
-        $this->uri = $_SERVER['REQUEST_URI'];
-        $this->httpHost = $_SERVER['HTTP_HOST'];
-        $this->server = $_SERVER;
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->scriptName = $_SERVER['SCRIPT_NAME'];
-        $this->requestSelf = $_SERVER['PHP_SELF'];
-        $this->protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
-    }
+      //Remove gets da uri
+      $xURI = explode('?', $this->uri);
+      $this->uri = $xURI[0];
+  }
+
+  //Método responsável por retornar a instanceia de router
+  public function getRouter()
+  {
+      return $this->router;
+  }
+
+  public function getHttpMethod(): string
+  {
+      return $this->httpMethod;
+  }
+
+  public function getUri(): string
+  {
+      return $this->uri;
+  }
+
+  public function getHeaders(): array
+  {
+      return $this->headers;
+  }
+
+  public function getQueryParams(): array
+  {
+      return $this->queryParams;
+  }
+
+  public function getPostVars(): array
+  {
+      return $this->postVars;
+  }
 }

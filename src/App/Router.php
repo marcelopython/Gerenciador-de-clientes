@@ -2,170 +2,169 @@
 
 namespace App\App;
 
+use App\App\Request;
+use Closure;
+use ReflectionFunction;
 
 /**
  * Class Router
  * Classe responsável por chamar o controller da requisiçao
  */
-class Router extends Request
+class Router
 {
-    private array $routes = [];
+    /**Url completda da aplicação*/
+    private string $url = '';
 
-    private array $methodsForCsrf = ['POST'=>'POST'];
+    /**Prefixo de todas as rotas*/
+    private string $prefix = '';
 
-    /**
-     *Buscar arquivos staticos css, js ....
-     */
-    public function asset(string $path): string
+    /**Indece de rotas*/
+    private array $router = [];
+
+    /**Instãncia de request*/
+    private Request $request;
+
+    public function __construct(string $url)
     {
-        $paths = explode('/', $this->scriptName);
-        $indexFile = array_search('index.php', $paths);
-        if($indexFile !== false){
-            unset($paths[$indexFile]);
-            return join('/',$paths).$path;
-        }
+        // Pre::pre($url);
+        $this->request = new Request($url);
+        $this->url = $url;
+        $this->setPrefix();
     }
 
-    private function setRoute(array $route)
+    /**Método responsável por definir o prefixo das rotas*/
+    private function setPrefix()
     {
-        $this->routes = array_merge($this->routes, $route);
+        //Informações da url atual;
+        $parseUrl = parse_url($this->url);
+        //Define o prefixo
+        $this->prefix = $parseUrl['path'] ?? '';
     }
 
-    /**
-     *Metodo para requisiçao http GET
-     */
-    public function get($url, $controller = [], \Closure $closure = null): Router
+    private function addRoute(string $method, string $route, array $params = []): void
     {
-        $this->setRoute([['method'=>'GET', $url, !empty($controller) ? $controller : $closure, 'data_request'=>$_GET]]);
-        return $this;
-    }
-
-    /**
-     *Metodo para requisiçao http POST
-     */
-    public function post($url, $controller = []): Router
-    {
-        $this->setRoute([['method'=>'POST',$url, $controller, 'data_request'=>$_POST]]);
-        return $this;
-    }
-
-    /**
-    *Metodo para setar o middlewware nas rotas selecionadas
-     */
-    public function middleware(array $middlewares, \Closure $func)
-    {
-        $urlsInMiddleware = $func();
-        foreach($this->routes as $key => $route){
-            foreach($urlsInMiddleware as $url) {
-                if($route[0] === $url){
-                    $this->routes[$key]['middleware'] = $middlewares;
-                }
+        //Validação dos parametros
+        foreach($params as $key => $value){
+            if($value instanceof Closure){
+                $params['controller'] = $value;
+                unset($params[$key]);
+                continue;
             }
         }
+
+        //Variaveis da rota
+        $params['variables'] = [];
+
+        //Padrão de validação das variaveis de rotas
+        $patternVariable = '/{(.*?)}/';
+        if(preg_match_all($patternVariable, $route, $matches)){
+            $route = preg_replace($patternVariable, '(.*?)', $route);
+            $params['variables'] = $matches[1];
+        }
+
+        //Padrão de validação da url
+        $patternRoute = '/^'.str_replace('/', '\/', $route).'$/';
+
+        //Adiciona a rota dentro da classe
+        $this->route[$patternRoute][$method] = $params;
     }
 
-    /**
-     * Inicia a buscar o controller da requisiçao
-     */
+    /**Método responsável por definir uma rota de GET*/
+    public function get(string $route, array $params = []): void
+    {
+        $this->addRoute('GET', $route, $params);
+    }
+
+    /**Método responsável por definir uma rota de POST*/
+    public function post(string $route, array $params = []): void
+    {
+        $this->addRoute('POST', $route, $params);
+    }
+
+    /**Método reponsável por retornar a URI desconsiderando o prefixo*/
+    private function getUri(): string
+    {
+        //Uri da request
+        $uri = $this->request->getUri();
+
+        //Fatia uri com o prefixo
+        $exUri = strlen($this->prefix) ? explode($this->prefix, $uri) : [$uri];
+
+        //Retorna a uri sem prefixo
+        return end($exUri);
+    }
+
+    /**Método reponsável por retornar os dados da rota atual*/
+    private function getRoute(): Array
+    {
+        //Uri
+        $uri = $this->getUri();
+
+        //Method
+        $httpMethod = $this->request->getHttpMethod();
+
+        //Valida as rotas
+        foreach($this->route as $patternRoute => $method){
+
+            //Verifica se a uri bate com o padrão
+            if(preg_match($patternRoute, $uri, $matches)){
+
+                //Verifica o método
+                if(isset($method[$httpMethod])){
+
+                    //Remove a primeira posição
+                    unset($matches[0]);
+
+                    //Variaveis processadas
+                    $keys = $method[$httpMethod]['variables'];
+                    $method[$httpMethod]['variables'] = array_combine($keys, $matches);
+                    $method[$httpMethod]['variables']['request'] = $this->request;
+                    
+                    //Retorno dos parametros da rota
+                    return $method[$httpMethod];
+                }
+                //Método não permitido
+                throw new \Exception('Método não permitido', 405);
+            }
+        };
+        
+        //Url não encotrada
+        throw new \Exception('URL não encotrada', 405);
+    }
+
+    /**Método responsável por executar a rota atual*/
     public function run()
     {
-        $pathInfoItems = explode('/', $this->server['PATH_INFO'] ?? $this->server['REQUEST_URI']);
-        $parameters = [];
-        foreach($this->routes as $route){
-            $this->getParameters($route, $pathInfoItems, $parameters);
-            if($this->httpHost.$this->scriptName.$route[0]  === $this->httpHost.$this->requestSelf && $this->method === $route['method']){
-                if(!empty($this->methodsForCsrf[$this->method])){
-                    if(empty($route['data_request']['_token']) || Csrf::csrf() !== $route['data_request']['_token']){
-                        $this->redirectTo('http/401', 401);
-                        return ViewHTML::view('http/401');
-                    }
-                    unset($route['data_request']['_token']);
-                }
-                $request = array_merge($this->server, ['data_request' => $route['data_request']]);
-                Csrf::setCsrf();
-                if($route[1] instanceof \Closure){
-                    return $route[1]($request);
-                }
-                return $this->getController($route, $request, $parameters);
-            }
-        }
-        return ViewHTML::view('http/404');
-    }
+        try{
+            //Obtem a rota atual
+            $route = $this->getRoute();
 
-    /**
-     * Obtem o controller da requisiçao
-     */
-    public function getController(array $route, array $request, array $parameters)
-    {
-        $controller = $route[1][0];
-        $method = $route[1][1];
-        if(!isset($route['middleware'])){
-            return (new $controller())->$method($request, ...$parameters);
-        }else{
-            foreach($route['middleware'] as $middleware){
-                $request = (new $middleware())->middleware($request, function($request){return $request;});
-                if(!$request){
-                    $this->redirectTo('login');
-                }
+            //Verifica o controlador
+            if(!isset($route['controller'])){
+                throw new \Exception('A url não pode ser processasda', 500);
             }
-            return (new $controller())->$method($request, ...$parameters);
+
+            //Argumentos as função
+            $args = [];
+
+            //Retorna a execução da funcão
+            $reflection = new ReflectionFunction($route['controller']);
+
+            foreach($reflection->getParameters() as $parameters){
+                $name = $parameters->getName();
+                $args[$name] = $route['variables'][$name] ?? '';
+            }
+            return call_user_func_array($route['controller'], $args);
+        }catch(\Exception $e){
+            return new Response($e->getCode(), $e->getMessage());
         }
     }
 
-    /**
-     * Pega o parametro esquecificado na configuraçao de rotas por default o coringa  e [$parametro]
-     * ex: /customer/delete/[$id]
-     */
-    public function getParameters(array &$route, array $pathInfoItems, array &$parameters)
+    /**Método responsavel por retornar a url atual*/
+    public function getCurrentUrl()
     {
-
-        if (strpos($route[0], '[$')) {
-            $pathWithParameters = explode('/', $route[0]);
-            foreach($pathWithParameters as $key => $path){
-                if (strpos($pathWithParameters[$key], '[$') !== false) {
-                    continue;
-                }
-                if(!isset($pathInfoItems[$key])){
-                    return;
-                }
-                if ($pathInfoItems[$key] !== $path) {
-                    return;
-                }
-            }
-            foreach ($pathWithParameters as $key => $value) {
-                if (array_search($value, $pathInfoItems) === false) {
-                    $this->validateTypeParameters($pathInfoItems[$key]);
-                    $parameters[] = $pathInfoItems[$key];
-                }
-                $pathWithParameters[$key] = $pathInfoItems[$key];
-            }
-            $route[0] = join('/', $pathWithParameters);
-        }
-
-    }
-    /**
-     * Valida o tipo de parametro setado na url
-     * */
-    public function validateTypeParameters($param)
-    {
-        foreach ($this->type as $type) {
-            switch($type) {
-                case 'int':
-                    if(!is_numeric($param)){
-                        return ViewHTML::view('http/404');
-                    }
-                    break;
-            }
-        }
+        return $this->url.$this->getUri();
     }
 
-    public function type(array $type = [])
-    {
-        $this->type = $type;
-    }
 
-    public function redirectTo($uri, $code = 302): void
-    {
-        header('Location: '.$this->protocol.$this->httpHost.$this->scriptName.'/'.$uri, false, $code);
-    }
 }

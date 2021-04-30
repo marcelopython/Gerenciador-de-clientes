@@ -1,9 +1,10 @@
 <?php
-namespace DB\Database;
 
-use \DB\Database\ContractDatabase\ConnectionInterface;
+namespace App\App;
 
-class Connection implements ConnectionInterface{
+
+class Connection
+{
 
     private static $pdo;
 
@@ -12,9 +13,12 @@ class Connection implements ConnectionInterface{
         if(!isset(self::$pdo)){
             try {
                 self::$pdo = new \PDO(
-                    'mysql:host='.HOST.';port='.PORT.';dbname='.DBNAME.';charset='.CHARSET.';',USER,PASSWORD
+                    'mysql:host='.getenv('DB_HOST').';port='.getenv('DB_PORT').
+                    ';dbname='. getenv('DB_DATABASE').';charset='.getenv('DB_CHARSET').';',
+                    getenv('DB_USER'),getenv('DB_PASSWORD')
                 );
             }catch(\PDOException $e){
+                Pre::pre($e->getMessage());
                 echo 'Falha na conexão';
             }
         }

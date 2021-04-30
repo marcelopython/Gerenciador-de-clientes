@@ -2,7 +2,8 @@
 
 namespace App\Controller\Auth;
 
-
+use App\App\Pre;
+use App\App\Response;
 use App\Models\User;
 use App\App\Router;
 use App\App\Session;
@@ -24,18 +25,14 @@ trait Authenticate
     public function check(array $data): bool
     {
         $data = $this->sanitize($data);
+
         $user = (new User())->where('email', $data['email'])->first();
         if(!$user || !$this->checkPassword($data['password'], $user['password'])){
             return false;
         }
-        $this->startSection(['email'=>$user['email'], 'name'=>$user['name']]);
-        return true;
-    }
 
-    public function startSection(array $user)
-    {
-        $user = $this->sanitize($user);
         Session::session('user', ['name'=>$user['name'], 'email'=>$user['email']]);
+        return true;
     }
 
     public function sanitize(array $data)
@@ -46,15 +43,8 @@ trait Authenticate
         ]));
     }
 
-    /**Finaliza a sessão do usuario*/
-    public function finishSession()
-    {
-        Session::remove('user');
-    }
-
     public function logout()
     {
-        $this->finishSession();
-        (new Router())->redirectTo($this->redirectNotAuthenticate);
+        return new Response(200, Session::remove('user'));
     }
 }

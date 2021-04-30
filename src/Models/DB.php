@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DB\Database\Connection;
+use App\App\Connection;
 use App\Models\ContractModel\DBAbstract;
 
 class DB extends DBAbstract

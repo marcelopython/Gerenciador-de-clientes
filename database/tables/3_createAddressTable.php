@@ -1,9 +1,8 @@
 <?php
 
 include __DIR__.'/../../vendor/autoload.php';
-include __DIR__.'/../connectionInitial.php';
 
-$stmt = \DB\Database\Connection::connect()->prepare('
+$stmt = App\App\Connection::connect()->prepare('
  CREATE TABLE address (
    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
    people_id int UNSIGNED NOT NULL,

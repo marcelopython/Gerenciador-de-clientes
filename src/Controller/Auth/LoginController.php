@@ -2,12 +2,12 @@
 
 namespace App\Controller\Auth;
 
-
+use App\App\Pre;
+use App\App\Request;
+use App\App\Response;
+use App\App\Session;
 use App\Models\User;
 use App\Models\ContractModel\UserInterface;
-use App\App\Router;
-use App\App\Session;
-use App\App\ViewHTML;
 
 class LoginController
 {
@@ -21,23 +21,13 @@ class LoginController
         $this->user = new User();
     }
 
-    public function loginForm()
+    public  function login(Request $request)
     {
-        $user = Session::get('user');
-        if($user){
-            return (new Router())->redirectTo('dashboard');
-        }
-        return ViewHTML::view('auth/login');
-    }
-
-    public function login($request)
-    {
-        $data = $request['data_request'];
+        $data = $request->getPostVars();
         if($this->check($data)){
-            return (new Router())->redirectTo('dashboard');
+            return new Response(200, Session::get('user'));
         }
-        Session::session('warning', 'E-mail ou senha inválido');
-        return (new Router())->redirectTo($this->redirectNotAuthenticate);
+        return new Response(403, 'Login ou senha invalidos');
     }
 
 }
