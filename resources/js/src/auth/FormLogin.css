@@ -1,5 +1,7 @@
-.container-form-login{
-    background-color: red;
-    width: 50%;
+.container > div{
     height: 100%;
+}
+
+.container > div > div{
+    align-items: center;
 }

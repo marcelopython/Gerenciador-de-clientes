@@ -22,10 +22,9 @@ trait Authenticate
     /**
      * Verifica se o usuário existe no banco de dados caso sim seta o usuário na sessão
      */
-    public function check(array $data): bool
+    public function check(array $data)
+    // : bool
     {
-        $data = $this->sanitize($data);
-
         $user = (new User())->where('email', $data['email'])->first();
         if(!$user || !$this->checkPassword($data['password'], $user['password'])){
             return false;

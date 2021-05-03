@@ -39,9 +39,12 @@ class Response
     /**Metodo responsável por enviar os headers para o navegador*/
     private function sendHeaders(): void
     {
-        //Status
-        http_response_code($this->httpCode);
-
+        http_response_code( $this->httpCode);
+        header("Access-Control-Allow-Origin: *");
+        header("Accept: application/json");
+        header("Access-Control-Allow-Methods: POST, GET, DELETE, PUT, OPTIONS");
+        header("Access-Control-Request-Headers: Authorization, Content-Type, Accept");
+        
         //Enviar Headers
         foreach($this->headers as $key => $value){
             header($key.': '.$value);
@@ -51,15 +54,17 @@ class Response
     /**Metodo responsavel por enviar resposta para o usuário*/
     public function sendResponse()
     {
+
         // Envia os headers
         $this->sendHeaders();
+
         // Imprime o conteudo
         switch($this->contentType){
             case 'text/html':
                 echo $this->content;
                 exit;
             case 'application/json':
-                echo json_encode($this->content);
+                echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                 exit;
         }
     }

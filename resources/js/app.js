@@ -1,8 +1,11 @@
-import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
+import React from 'react'
 import ReactDom from 'react-dom';
-import FormLogin from './src/auth/FormLogin';
+import App from './src/App';
 
 ReactDom.render(
-    <FormLogin />, 
+    <App/>
+    , 
     document.getElementById('app')
 );

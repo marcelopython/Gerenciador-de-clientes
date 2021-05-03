@@ -2,7 +2,6 @@
 
 namespace App\Controller\Auth;
 
-use App\App\Pre;
 use App\App\Request;
 use App\App\Response;
 use App\App\Session;
@@ -23,11 +22,18 @@ class LoginController
 
     public  function login(Request $request)
     {
-        $data = $request->getPostVars();
-        if($this->check($data)){
-            return new Response(200, Session::get('user'));
-        }
-        return new Response(403, 'Login ou senha invalidos');
+            $data = $request->getPostVars();
+
+            // if(!empty($data)){
+            //     $data = json_decode(key($data), true);
+            // }
+            // return new Response(200, $this->check($data));
+
+            if($this->check($data)){
+                return new Response(200, Session::get('user'));
+            }
+            return new Response(403, 'Login ou senha inválidos');
+      
     }
 
 }
