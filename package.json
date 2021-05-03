@@ -4,7 +4,9 @@
   "description": "# Guia para execução do projeto",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --mode development"
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "dev": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {

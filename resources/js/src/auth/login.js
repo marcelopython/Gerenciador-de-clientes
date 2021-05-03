@@ -1,40 +1,30 @@
 import axios from 'axios';
+import React from 'react';
+import { Redirect } from 'react-router'
 
-// myHeaders = new Headers({
 
-//   });
-
-export default function Login(submitEvent) {
-
+export default function Login(submitEvent, state) {
     submitEvent.preventDefault();
+
     const form = submitEvent.target;
-    let body = { email: form[0].value, password: form[1].value };
 
-    let config = {
-        headers:{
-            'Content-Type':'application/json',
-            'Accept':'application/json',
-                "Content-Type": "text/plain",
-    "X-Custom-Header": "ProcessThisImmediately",
+    const bodyFormData = new FormData();
+    bodyFormData.append('email', form[0].value);
+    bodyFormData.append('password', form[1].value);
+
+    axios.post(form.action, bodyFormData)
+    .then(resp => {
+        if(resp.status === 200){
+            console.log(resp)
+
+            return  <Redirect to="/Gerenciador-de-clientes/teste" />
+
+        }else{
+            state({displayMessageErro:'d-flex', MessageErro:'Login ou senha inválido'})
         }
-        }
-        axios.post(form.action, body, config)
-        .then(resp => {
-            console.log(resp.data )
-        })
-        .catch(error => {
-            console.log(error);
-        })
-
-
-    
-    // axios.post(form.action, data, config)
-    // .then(resp=>{
-    //     console.log(resp.data)
-    // }).catch(err => console.error(err));;
-
+    })
+    .catch(error => {
+        console.log(error)
+        state({displayMessageErro:'d-flex', MessageErro:'Login ou senha inválido'})
+    })
 }
-// {crossDomain: true}{
-            //     'Content-Type':'application/x-www-form-urlencoded',
-            //     'Access-Control-Allow-Origin':'*',
-            // }
