@@ -2,7 +2,7 @@ import './FormLogin.css';
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import { Form, Alert } from 'react-bootstrap';
-import Login from './login';
+import Login from '../../auth/login';
 
 const stateInitial = {
     displayMessageErro: 'd-none',
@@ -18,7 +18,7 @@ export default (props) => {
             <div className="col-12 col-md-4">
                 <Alert className={state.displayMessageErro} variant={'dark'}>{state.MessageErro}</Alert>
                 <Form action={'http://localhost/Gerenciador-de-clientes/login'} method='post'
-                 onSubmit={(e)=>Login(e, setState)}>
+                 onSubmit={(e)=>Login(e, setState, props.stateApp)}>
                     <Form.Group>
                         <Form.Label htmlFor="email">E-mail</Form.Label>
                         <Form.Control type="email" id="email" placeholder="Email" name="email"/>

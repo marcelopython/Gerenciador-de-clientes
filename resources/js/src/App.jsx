@@ -1,26 +1,36 @@
-import React from 'react';
-import FormLogin from './auth/FormLogin';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import FormLogin from './views/auth/FormLogin';
+import Home from './views/home/Home';
+
+
 
 const URI =  '/Gerenciador-de-clientes';
 
-function teste(){
-    return (
-        <div><h1>Logado</h1></div>
-    );
+const stateApp = {
+    logado:false
 }
 
 export default props => {
 
+    const [state, setState] = useState(stateApp);
+    
     return (
-        <div className="App">
-            <Router>
-                <div>
-                    <Route path={URI+"/login1"}  component={FormLogin} />
-                    <Route path={URI+"/teste"}  component={teste} />
-                </div>
-            </Router>
-        </div>
-    );
+        <Router>
+            <div>
+                <Switch>
+                    
+                    <Route path={URI+"/login"}>
+                        <FormLogin stateApp={setState}/>
+                        { state.logado ? <Redirect to={URI+"/"}/> : '' }
+                    </Route>
+                     
+                    <Route path={URI+"/"}>
+                        <Home />
+                    </Route>
 
+                </Switch>
+            </div>
+        </Router>
+    );
 }

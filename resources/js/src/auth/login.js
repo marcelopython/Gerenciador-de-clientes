@@ -1,9 +1,8 @@
 import axios from 'axios';
-import React from 'react';
-import { Redirect } from 'react-router'
 
 
-export default function Login(submitEvent, state) {
+export default function Login(submitEvent, state, stateApp) {
+
     submitEvent.preventDefault();
 
     const form = submitEvent.target;
@@ -15,16 +14,13 @@ export default function Login(submitEvent, state) {
     axios.post(form.action, bodyFormData)
     .then(resp => {
         if(resp.status === 200){
-            console.log(resp)
-
-            return  <Redirect to="/Gerenciador-de-clientes/teste" />
-
+            stateApp({logado:true});
+            return true
         }else{
             state({displayMessageErro:'d-flex', MessageErro:'Login ou senha inválido'})
         }
     })
     .catch(error => {
-        console.log(error)
         state({displayMessageErro:'d-flex', MessageErro:'Login ou senha inválido'})
     })
 }
