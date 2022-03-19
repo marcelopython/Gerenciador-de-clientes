@@ -12,6 +12,8 @@ namespace Kabum\App;
 class Csrf extends Session
 {
 
+    
+
     public static function setCsrf(){
         self::session('md5', hash('sha256', date('dmYHiS', strtotime('now'))));
     }
